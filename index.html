@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090b12"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><title>RESET 66</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#090b12;--card:#121622;--line:#252c3d;--text:#f6f7fb;--muted:#929bad;--accent:#7c5cff;--green:#39d98a;--blue:#42c8ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+.app{max-width:540px;margin:auto;padding:calc(18px + env(safe-area-inset-top)) 16px calc(95px + env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:flex-start}.eyebrow{font-size:12px;color:#aab3c5;letter-spacing:1.5px}.title{font-size:36px;font-weight:900;margin:3px 0}.sub{color:var(--muted);font-size:14px}.day{text-align:right}.day b{font-size:25px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin-top:14px}
+.hero{background:linear-gradient(145deg,#17152c,#101625);overflow:hidden}.level{color:#b5aaff;font-weight:800}.xp{font-size:34px;font-weight:900;margin-top:3px}.bar{height:10px;background:#272d3d;border-radius:99px;overflow:hidden;margin:12px 0 7px}.fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--blue));transition:.3s}.small{font-size:12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#0d111b;border-radius:16px;padding:14px}.stat .v{font-size:24px;font-weight:850;margin-top:3px}.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
+h2{font-size:20px;margin:0 0 10px}.task{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}.task:last-child{border-bottom:0}.check{width:32px;height:32px;flex:0 0 32px;border-radius:10px;border:1px solid #414b62;background:#0c1019;color:#fff;font-size:18px}.done .check{background:var(--green);border-color:var(--green)}.done .tt{text-decoration:line-through;color:#727c90}.tt{flex:1}.pts{font-size:12px;color:#a99fff}
+.inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{font-size:11px;color:var(--muted)}input{width:100%;margin-top:6px;background:#0b0f18;border:1px solid #2c3549;border-radius:12px;padding:12px;color:#fff;font-size:16px;outline:none}button.save{width:100%;margin-top:11px;border:0;border-radius:13px;padding:13px;background:var(--accent);color:#fff;font-weight:800;font-size:15px}
+.quote{font-weight:750;font-size:17px;line-height:1.35}.footer{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#090b12ee;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;justify-content:center}.nav{font-size:12px;color:#9ea8ba}
+</style></head><body><main class="app">
+<div class="top"><div><div class="eyebrow">TWOJA METAMORFOZA</div><div class="title">RESET 66</div><div class="sub">Nie perfekcja. Konsekwencja.</div></div><div class="day"><div class="eyebrow">DZIEŃ</div><b id="day">1/66</b></div></div>
+
+<section class="card hero"><div class="top"><div><div class="level" id="level">LEVEL 1</div><div class="xp" id="xp">0 XP</div></div><div style="text-align:right"><div class="eyebrow">STREAK</div><b id="streak">0 🔥</b></div></div><div class="bar"><div class="fill" id="fill"></div></div><div class="small" id="next"></div></section>
+
+<section class="card"><div class="stats">
+<div class="stat"><div class="l">Aktualna waga</div><div class="v" id="weight">120.0 kg</div></div>
+<div class="stat"><div class="l">Cel</div><div class="v">90.0 kg</div></div>
+<div class="stat"><div class="l">Zrobione dziś</div><div class="v" id="done">0/5</div></div>
+<div class="stat"><div class="l">Progres</div><div class="v" id="progress">0%</div></div>
+</div></section>
+
+<section class="card"><h2>Dzisiejsze misje</h2><div id="tasks"></div></section>
+
+<section class="card"><h2>Twój dzień</h2><div class="inputs">
+<label>WAGA (kg)<input id="wi" type="number" step=".1" placeholder="119.8"></label>
+<label>KALORIE<input id="ci" type="number" placeholder="2300"></label>
+<label>KROKI<input id="si" type="number" placeholder="6000"></label>
+<label>WODA (l)<input id="wa" type="number" step=".1" placeholder="1.0"></label>
+</div><button class="save" onclick="saveDay()">ZAPISZ DZIEŃ</button></section>
+
+<section class="card"><div class="quote">„Nie muszę mieć motywacji. Muszę tylko nie zrezygnować.”</div><div class="small" style="margin-top:7px">Jeden słabszy dzień nie kasuje progresu.</div></section>
+</main><div class="footer"><div class="nav">RESET 66 • 120 kg → 90 kg • dzień po dniu</div></div>
+
+<script>
+const K='reset66iphone';
+let s=JSON.parse(localStorage.getItem(K)||'null')||{day:1,xp:0,streak:0,weight:120,days:{},done:{}};
+const tasks=[
+ ['water','💧 Woda — minimum 1 l',10],
+ ['steps','🚶 Kroki — minimum 6000',20],
+ ['cal','🍽️ Kalorie — około 2300 kcal',20],
+ ['breaks','🪑 Przerwy od biurka',10],
+ ['sleep','😴 Zadbaj o sen',10]
+];
+function persist(){localStorage.setItem(K,JSON.stringify(s))}
+function render(){
+ let d=s.done[s.day]||{}, count=Object.values(d).filter(Boolean).length;
+ document.getElementById('day').textContent=s.day+'/66';document.getElementById('xp').textContent=s.xp+' XP';
+ document.getElementById('streak').textContent=s.streak+' 🔥';document.getElementById('weight').textContent=(+s.weight||120).toFixed(1)+' kg';
+ document.getElementById('level').textContent='LEVEL '+(Math.floor(s.xp/100)+1);
+ let p=s.xp%100;document.getElementById('fill').style.width=p+'%';document.getElementById('next').textContent=(100-p)+' XP do kolejnego poziomu';
+ document.getElementById('done').textContent=count+'/5';document.getElementById('progress').textContent=Math.round(count/5*100)+'%';
+ document.getElementById('tasks').innerHTML=tasks.map(t=>`<div class="task ${d[t[0]]?'done':''}"><button class="check" onclick="toggle('${t[0]}')">${d[t[0]]?'✓':''}</button><div class="tt">${t[1]}</div><div class="pts">+${t[2]}</div></div>`).join('');
+ let x=s.days[s.day]||{};wi.value=x.weight||'';ci.value=x.cal||'';si.value=x.steps||'';wa.value=x.water||'';
+}
+function toggle(id){let d=s.done[s.day]||(s.done[s.day]={}),t=tasks.find(x=>x[0]===id),add=d[id]? -t[2]:t[2];d[id]=!d[id];s.xp=Math.max(0,s.xp+add);persist();render()}
+function saveDay(){s.days[s.day]={weight:+wi.value||null,cal:+ci.value||null,steps:+si.value||null,water:+wa.value||null};if(+wi.value)s.weight=+wi.value;persist();render()}
+render();
+</script></body></html>
