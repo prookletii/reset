@@ -1,725 +1,192 @@
-<!doctype html>
-<html lang="pl">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080a10"><meta name="apple-mobile-web-app-capable" content="yes">
-<title>RESET 66</title><link rel="manifest" href="manifest.json">
+<!doctype html><html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#111523"><meta name="description" content="Mobilna przygoda clicker RPG w świecie Królestw Cienia."><link rel="icon" type="image/svg+xml" href="favicon.svg"><title>Królestwa Cienia — clicker RPG</title>
 <style>
-:root{--bg:#080a10;--card:#111622;--line:#252d40;--text:#f5f7fb;--muted:#929bad;--p:#7657ff;--c:#35cfff;--g:#36d58a;--r:#ff5577;--gold:#ffbf47}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#171333,#080a10 44%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}.app{max-width:560px;margin:auto;padding:calc(20px + env(safe-area-inset-top)) 15px calc(95px + env(safe-area-inset-bottom))}
-.top{display:flex;justify-content:space-between}.ey{font-size:10px;letter-spacing:1.5px;color:#a4aec0}.title{font-size:35px;font-weight:950}.sub{color:var(--muted);font-size:13px}.day{text-align:right}.day b{font-size:25px}.clock{font-size:12px;color:#aab3c5;margin-top:2px}
-.card{background:#111622e8;border:1px solid var(--line);border-radius:22px;padding:17px;margin-top:13px}.hero{background:linear-gradient(145deg,#211b43,#101827);overflow:hidden}.level{color:#b9aaff;font-weight:900}.xp{font-size:33px;font-weight:950}.bar{height:10px;background:#292f40;border-radius:99px;overflow:hidden;margin:10px 0 6px}.fill{height:100%;background:linear-gradient(90deg,var(--p),var(--c))}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat{background:#0b0f18;border-radius:15px;padding:12px}.stat b{display:block;font-size:22px;margin-top:3px}.stat span{font-size:10px;color:var(--muted);text-transform:uppercase}
-.avatar{height:185px;border-radius:18px;background:radial-gradient(circle at 50% 35%,#4e3a9e 0,#17142c 30%,#0b0f18 70%);display:flex;align-items:center;justify-content:center;position:relative;margin-bottom:14px;overflow:hidden}.avatar .body{font-size:92px;filter:drop-shadow(0 15px 20px #0008)}.avatar .lvl{position:absolute;bottom:10px;left:10px;background:#0b0f18cc;border:1px solid #39425a;border-radius:99px;padding:6px 10px;font-size:11px;font-weight:800}.avatar .tag{position:absolute;bottom:10px;right:10px;background:#0b0f18cc;border:1px solid #39425a;border-radius:99px;padding:6px 10px;font-size:11px;color:#bdb4ff}
-h2{font-size:19px;margin:0}.section{display:flex;justify-content:space-between;align-items:center}.pill{padding:6px 9px;background:#252a3b;border-radius:99px;font-size:11px;color:#c5cbe0}.task{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}.check{width:31px;height:31px;border-radius:10px;border:1px solid #45506a;background:#0b0f18;color:#fff}.done .check{background:var(--g);border-color:var(--g)}.done .tt{text-decoration:line-through;color:#6e7789}.tt{flex:1}.pts{color:#a99fff;font-size:12px}
-.ach{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.badge{background:#0b0f18;border:1px solid var(--line);border-radius:15px;padding:11px;text-align:center}.badge .ico{font-size:24px}.badge small{display:block;color:var(--muted);font-size:10px;margin-top:4px}.lock{opacity:.45}.inputs{display:grid;grid-template-columns:1fr 1fr;gap:9px}label{font-size:10px;color:var(--muted)}input{width:100%;margin-top:5px;background:#0b0f18;border:1px solid #2d374d;border-radius:11px;padding:11px;color:white;font-size:16px}button.save{width:100%;margin-top:10px;padding:13px;border:0;border-radius:12px;background:var(--p);color:#fff;font-weight:850}
-.notice{display:none;border-radius:14px;padding:12px;margin-top:12px;font-size:13px;font-weight:750}.notice.show{display:block}.notice.ok{background:#103323;border:1px solid #1e7d4d}.notice.bad{background:#35121d;border:1px solid #7c263c}.notice.gold{background:#332711;border:1px solid #7b5b20}
-.summary{display:none}.summary.show{display:block}.reward{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.reward:last-child{border:0}.reward b{color:#bdb4ff}.complete{background:linear-gradient(145deg,#133323,#101827);border-color:#267d50}.complete h2{font-size:23px}.complete .big{font-size:35px;font-weight:950;margin:5px 0}
-.quote{font-weight:800;font-size:17px;line-height:1.35}.small{font-size:11px;color:var(--muted);margin-top:6px}.footer{position:fixed;left:0;right:0;bottom:0;background:#080a10ed;backdrop-filter:blur(15px);border-top:1px solid var(--line);padding:10px;text-align:center;font-size:11px;color:#9ba4b6}
-
-.character-panel{display:none}
-.character-panel.active{display:block}
-.char-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.char-avatar{width:72px;height:72px;border-radius:20px;background:linear-gradient(145deg,#222,#111);display:flex;align-items:center;justify-content:center;font-size:40px;border:1px solid #333}
-.char-title h2{margin:0 0 4px;font-size:24px}
-.char-title p{margin:0;color:#999}
-.char-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.char-stat{background:#151515;border:1px solid #292929;border-radius:16px;padding:14px}
-.char-stat .name{font-size:13px;color:#aaa;margin-bottom:7px}
-.char-stat .value{font-size:22px;font-weight:800}
-.statbar{height:7px;background:#292929;border-radius:99px;overflow:hidden;margin-top:9px}
-.statbar i{display:block;height:100%;background:#fff;border-radius:99px}
-.char-note{margin-top:14px;padding:14px;border-radius:16px;background:#111;border:1px solid #292929;color:#bbb;line-height:1.45}
-.navrow{display:flex;gap:8px;margin:14px 0 18px}
-.navbtn{flex:1;padding:12px;border-radius:14px;border:1px solid #303030;background:#141414;color:#fff;font-weight:700}
-.navbtn.active{background:#fff;color:#111}
-
-
-.inventory-panel{display:none}
-.inventory-panel.active{display:block}
-.item-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.item{background:#151515;border:1px solid #292929;border-radius:16px;padding:14px;min-height:120px;position:relative}
-.item.locked{opacity:.45}
-.item .icon{font-size:30px;margin-bottom:8px}
-.item .itemname{font-weight:800}
-.item .desc{font-size:12px;color:#999;margin-top:5px;line-height:1.35}
-.item .tag{position:absolute;right:10px;top:10px;font-size:10px;color:#aaa}
-.item.unlocked{border-color:#555}
-.reward-card{background:#111;border:1px solid #292929;border-radius:16px;padding:14px;margin-top:12px}
-.reward-title{font-weight:800;margin-bottom:6px}
-.xp-pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#fff;color:#111;font-size:11px;font-weight:800}
-
-
-.loot-panel{display:none}
-.loot-panel.active{display:block}
-.lootbox{background:linear-gradient(145deg,#181818,#0e0e0e);border:1px solid #333;border-radius:20px;padding:22px;text-align:center;margin-bottom:14px}
-.chest{font-size:72px;line-height:1;margin:8px 0 16px}
-.loot-result{display:none;background:#151515;border:1px solid #333;border-radius:18px;padding:18px;text-align:center}
-.loot-result.show{display:block}
-.rarity{font-size:12px;font-weight:900;letter-spacing:1px;margin-bottom:6px}
-.loot-icon{font-size:48px;margin:8px}
-.loot-name{font-size:20px;font-weight:900}
-.loot-desc{color:#aaa;margin-top:6px}
-.lootbtn{width:100%;padding:14px;border:0;border-radius:14px;background:#fff;color:#111;font-weight:900;font-size:15px;margin-top:14px}
-.loot-history{margin-top:14px}
-.loot-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #252525}
-.loot-row:last-child{border-bottom:0}
-.loot-row .smallicon{font-size:24px}
-.rarity-common{color:#aaa}.rarity-rare{color:#6fb6ff}.rarity-epic{color:#c084fc}.rarity-legendary{color:#ffcc66}
-
-
-.shop-panel{display:none}.shop-panel.active{display:block}
-.wallet{display:flex;justify-content:space-between;align-items:center;background:#151515;border:1px solid #292929;border-radius:16px;padding:14px;margin-bottom:12px}
-.coins{font-size:22px;font-weight:900}.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.shop-item{background:#151515;border:1px solid #292929;border-radius:16px;padding:14px}
-.shop-item .icon{font-size:34px}.shop-item h3{margin:7px 0 4px;font-size:15px}.shop-item p{margin:0;color:#999;font-size:12px;min-height:34px}
-.price{margin-top:10px;font-weight:900}.buybtn{width:100%;margin-top:9px;padding:10px;border:0;border-radius:12px;background:#fff;color:#111;font-weight:800}.buybtn:disabled{opacity:.35}
-.upgrade{margin-top:14px;background:#111;border:1px solid #292929;border-radius:16px;padding:14px}
-
-
-.boss-panel{display:none}.boss-panel.active{display:block}
-.boss{background:linear-gradient(145deg,#1a1010,#0d0d0d);border:1px solid #3a2424;border-radius:20px;padding:20px;text-align:center}
-.boss-avatar{font-size:76px}.boss-hp{height:14px;background:#292929;border-radius:99px;overflow:hidden;margin:14px 0 8px}.boss-hp i{display:block;height:100%;background:#fff;border-radius:99px;transition:width .35s}
-.boss-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.boss-stat{background:#151515;border:1px solid #292929;border-radius:14px;padding:12px}.boss-stat b{display:block;font-size:18px;margin-top:5px}
-.boss-log{margin-top:14px;background:#111;border:1px solid #292929;border-radius:14px;padding:12px;min-height:48px;color:#bbb;font-size:13px;line-height:1.45}
-.attackbtn{width:100%;margin-top:14px;padding:15px;border:0;border-radius:14px;background:#fff;color:#111;font-weight:900;font-size:15px}.attackbtn:disabled{opacity:.35}
-.boss-win{display:none;margin-top:14px;background:#151515;border:1px solid #444;border-radius:16px;padding:16px;text-align:center}.boss-win.show{display:block}
-
-</style></head>
-<body><main class="app">
-<div class="top"><div><div class="ey">YOUR LIFE RPG</div><div class="title">RESET 66</div><div class="sub">Zmieniasz postać. Zmieniasz życie.</div></div><div class="day"><div class="ey">DZIEŃ</div><b id="day">1/66</b><div class="clock" id="clock">--:--:--</div></div></div>
-
-<section class="card hero">
-<div class="avatar"><div class="body">🧍</div><div class="lvl" id="avatarLvl">LEVEL 1</div><div class="tag">RESET PLAYER</div></div>
-<div class="top"><div><div class="level" id="level">LEVEL 1</div><div class="xp" id="xp">0 XP</div></div><div style="text-align:right"><div class="ey">STREAK</div><b id="streak">0 🔥</b></div></div>
-<div class="bar"><div class="fill" id="fill"></div></div><div class="small" id="next"></div>
-</section>
-
-
-<div class="navrow">
-  <button class="navbtn active" id="navHome" onclick="showPanel('home')">GRA</button>
-  <button class="navbtn" id="navCharacter" onclick="showPanel('character')">POSTAĆ</button>
-  <button class="navbtn" id="navInventory" onclick="showPanel('inventory')">EKWIPUNEK</button>
-  <button class="navbtn" id="navLoot" onclick="showPanel('loot')">LOOT</button>
-  <button class="navbtn" id="navShop" onclick="showPanel('shop')">SKLEP</button>
-  <button class="navbtn" id="navBoss" onclick="showPanel('boss')">BOSS</button>
-</div>
-
-<section class="card character-panel" id="characterPanel">
-  <div class="char-header">
-    <div class="char-avatar">🧍</div>
-    <div class="char-title">
-      <h2>Twoja postać</h2>
-      <p>RESET 66 • rozwój przez działanie</p>
-    </div>
-  </div>
-
-  <div class="char-stats">
-    <div class="char-stat">
-      <div class="name">❤️ KONDYCJA</div>
-      <div class="value" id="statCondition">10</div>
-      <div class="statbar"><i id="barCondition" style="width:10%"></i></div>
-    </div>
-    <div class="char-stat">
-      <div class="name">💪 SIŁA</div>
-      <div class="value" id="statStrength">10</div>
-      <div class="statbar"><i id="barStrength" style="width:10%"></i></div>
-    </div>
-    <div class="char-stat">
-      <div class="name">🧠 DYSCYPLINA</div>
-      <div class="value" id="statDiscipline">10</div>
-      <div class="statbar"><i id="barDiscipline" style="width:10%"></i></div>
-    </div>
-    <div class="char-stat">
-      <div class="name">⚡ ENERGIA</div>
-      <div class="value" id="statEnergy">10</div>
-      <div class="statbar"><i id="barEnergy" style="width:10%"></i></div>
-    </div>
-  </div>
-
-  <div class="char-note" id="characterNote">
-    Twoja postać rozwija się razem z Tobą. Wykonywanie codziennych misji będzie zwiększać jej statystyki.
-  </div>
-</section>
-<section class="card inventory-panel" id="inventoryPanel">
-  <div class="char-header">
-    <div class="char-avatar">🎒</div>
-    <div class="char-title">
-      <h2>Ekwipunek</h2>
-      <p>Przedmioty odblokowujesz dzięki progresowi.</p>
-    </div>
-  </div>
-  <div class="reward-card">
-    <div class="reward-title">🏆 Następny przedmiot</div>
-    <div id="nextReward">Sprawdzanie...</div>
-  </div>
-  <div class="item-grid" id="itemGrid"></div>
-</section>
-<section class="card loot-panel" id="lootPanel">
-  <div class="char-header">
-    <div class="char-avatar">🎁</div>
-    <div class="char-title">
-      <h2>Skrzynia dnia</h2>
-      <p>Ukończ dzień i odbierz losową nagrodę.</p>
-    </div>
-  </div>
-
-  <div class="lootbox">
-    <div class="chest" id="chestIcon">🎁</div>
-    <div><b>CODZIENNA SKRZYNIA</b></div>
-    <div style="color:#999;margin-top:5px">Jedna nagroda za ukończony dzień.</div>
-    <button class="lootbtn" id="openLootBtn" onclick="openLoot()">OTWÓRZ SKRZYNIĘ</button>
-  </div>
-
-  <div class="loot-result" id="lootResult">
-    <div class="rarity" id="lootRarity"></div>
-    <div class="loot-icon" id="lootIcon"></div>
-    <div class="loot-name" id="lootName"></div>
-    <div class="loot-desc" id="lootDesc"></div>
-  </div>
-
-  <div class="reward-card loot-history">
-    <div class="reward-title">📜 Ostatni loot</div>
-    <div id="lootHistory">Brak zdobytych przedmiotów.</div>
-  </div>
-</section>
-<section class="card shop-panel" id="shopPanel">
-  <div class="char-header">
-    <div class="char-avatar">🛒</div>
-    <div class="char-title"><h2>Sklep</h2><p>Wydawaj walutę zdobywaną za progres.</p></div>
-  </div>
-  <div class="wallet"><span>💰 WALUTA RESET</span><span class="coins" id="coinBalance">0</span></div>
-  <div class="shop-grid" id="shopGrid"></div>
-  <div class="upgrade">
-    <b>⬆️ Ulepszenie postaci</b>
-    <p id="upgradeInfo" style="color:#999;font-size:12px"></p>
-    <button class="buybtn" id="upgradeBtn" onclick="buyUpgrade()">ULEPSZ</button>
-  </div>
-</section>
-<section class="card boss-panel" id="bossPanel">
-  <div class="char-header">
-    <div class="char-avatar">👹</div>
-    <div class="char-title"><h2>Boss</h2><p>Twoja postać kontra wyzwanie etapu.</p></div>
-  </div>
-  <div class="boss">
-    <div class="boss-avatar" id="bossAvatar">👹</div>
-    <h2 id="bossName">Strażnik RESET</h2>
-    <div id="bossHpText">100 / 100 HP</div>
-    <div class="boss-hp"><i id="bossHpBar" style="width:100%"></i></div>
-    <div class="boss-stats">
-      <div class="boss-stat">⚔️ Twój atak<b id="playerPower">10</b></div>
-      <div class="boss-stat">❤️ Twoje HP<b id="playerHp">100</b></div>
-    </div>
-    <button class="attackbtn" id="attackBtn" onclick="attackBoss()">⚔️ ATAKUJ</button>
-    <div class="boss-log" id="bossLog">Boss czeka. Kliknij ATAKUJ, aby rozpocząć walkę.</div>
-  </div>
-  <div class="boss-win" id="bossWin"></div>
-</section>
-
-
-
-
-
-<section class="card"><div class="grid">
-<div class="stat"><span>Waga</span><b id="weight">120.0 kg</b></div><div class="stat"><span>Cel</span><b>90 kg</b></div>
-<div class="stat"><span>Etap</span><b id="stage">START</b></div><div class="stat"><span>Misje</span><b id="done">0/5</b></div>
-</div></section>
-
-<section class="card"><div class="section"><h2>🎯 Dzisiejsze misje</h2><span class="pill" id="unlock">DZIEŃ 1</span></div><div id="tasks"></div>
-<div class="small">Ukończ minimum 4/5, aby zaliczyć dzień.</div></section>
-
-<section id="summary" class="card complete summary">
-<h2>🎉 DZIEŃ UKOŃCZONY!</h2><div class="big" id="sumTitle">RESET COMPLETE</div>
-<div class="small" id="sumSub">Wszystkie wymagane misje wykonane.</div>
-<div id="rewards"></div>
-</section>
-
-<section class="card"><div class="section"><h2>🏆 Osiągnięcia</h2><span class="pill" id="achcount">0</span></div><div class="ach" id="ach"></div></section>
-
-<section class="card"><h2>📊 Dzisiejszy raport</h2><div class="inputs">
-<label>WAGA<input id="wi" type="number" step=".1" placeholder="119.8"></label>
-<label>KALORIE<input id="ci" type="number" placeholder="2300"></label>
-<label>KROKI<input id="si" type="number" placeholder="6000"></label>
-<label>WODA (l)<input id="wa" type="number" step=".1" placeholder="1.0"></label>
-</div><button class="save" onclick="saveDay()">ZAPISZ RAPORT</button><div id="notice" class="notice"></div></section>
-
-<section class="card"><div class="quote">„Nie muszę mieć motywacji. Muszę tylko nie zrezygnować.”</div><div class="small">O północy gra automatycznie przechodzi na kolejny dzień.</div></section>
-</main><div class="footer">RESET 66 • 120 kg → 90 kg • TWOJA GRA</div>
-
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Marcellus&display=swap');:root{--gold:#f6c76b;--cream:#f1e8d6;--muted:#9ba2b4;--panel:#202536;--line:#373d50}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#35324b,#171b29 42%,#10131e);color:var(--cream);font:14px 'DM Sans',sans-serif;min-height:100vh}button{font:inherit;color:inherit;cursor:pointer}.shell{max-width:470px;min-height:100svh;margin:auto;padding:15px 16px calc(95px + env(safe-area-inset-bottom))}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.brand{font:20px Marcellus,serif}.brand span{color:var(--gold)}.rank{font-size:11px;color:var(--gold);border:1px solid #63533c;border-radius:99px;padding:6px 10px;background:#2b2930}.resources{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}.resource{padding:9px 12px;border-radius:13px;background:var(--panel);border:1px solid var(--line);display:flex;gap:9px;align-items:center}.resource .ico{font-size:20px}.resource small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px}.resource b{font-size:17px;font-variant-numeric:tabular-nums}.xp{margin:0 2px 12px}.xp-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-bottom:4px}.xp .bar{height:5px}.bar{height:9px;background:#171923;border-radius:99px;overflow:hidden;border:1px solid #ffffff22}.fill{height:100%;width:100%;background:linear-gradient(90deg,#c84f59,#f18470);transition:width .15s}.xpfill{background:linear-gradient(90deg,#67a9d8,#9cdbf4)}.world{width:100%;border:1px solid #55516a;border-radius:11px;background:#2a2939;padding:8px 11px;text-align:left;display:flex;justify-content:space-between;margin-bottom:10px;color:#e8d9bc}.world b{font-size:12px}.world small{font-size:10px;color:var(--muted)}.hero{position:relative;overflow:hidden;height:270px;border-radius:19px;border:1px solid #454459;background:linear-gradient(180deg,#312d46,#51415a 47%,#323148 74%,#24283a);display:flex;align-items:center;justify-content:center;touch-action:manipulation;user-select:none}.moon{position:absolute;right:40px;top:26px;width:55px;height:55px;border-radius:50%;background:#edc989;box-shadow:0 0 32px #efca8a55}.mountain{position:absolute;bottom:45px;width:150%;height:116px;background:#38344a;clip-path:polygon(0 100%,0 66%,13% 28%,25% 64%,41% 10%,52% 62%,65% 30%,80% 72%,89% 39%,100% 68%,100% 100%)}.mountain.back{bottom:53px;background:#414057;opacity:.7;transform:translateX(24px) scale(.9)}.ground{position:absolute;bottom:0;width:100%;height:70px;background:linear-gradient(#333148,#242638)}.monster{z-index:2;position:relative;display:grid;place-items:center;width:160px;height:160px;transition:transform .09s;filter:drop-shadow(0 13px 7px #10111b88)}.monster:active{transform:scale(.92)}.beast{position:relative;width:112px;height:105px;border-radius:48% 48% 40% 40%;background:linear-gradient(145deg,#758b70,#465d58 75%);border:3px solid #a8a984;box-shadow:inset -14px -12px #273e43,inset 9px 8px #97a07a}.beast:before,.beast:after{content:'';position:absolute;top:-19px;width:29px;height:48px;background:#738774;border:3px solid #a8a984;clip-path:polygon(50% 0,100% 100%,0 75%)}.beast:before{left:8px;transform:rotate(-19deg)}.beast:after{right:8px;transform:rotate(19deg)}.eyes{position:absolute;top:35px;left:23px;right:23px;display:flex;justify-content:space-between}.eyes i{width:12px;height:14px;border-radius:50%;background:#ffcb67;box-shadow:0 0 10px #ffae47}.snout{position:absolute;left:37px;top:61px;width:34px;height:20px;border-radius:50%;background:#273239}.hpbox{position:absolute;z-index:3;top:13px;left:14px;right:14px}.hphead{display:flex;justify-content:space-between;font-size:11px;font-weight:700;text-shadow:0 1px 3px #000}.hpfill{background:linear-gradient(90deg,#c84f59,#f18470)}.tap-hint{position:absolute;z-index:3;bottom:10px;color:#e8d9bc;font-size:10px;opacity:.8}.section-title{font:16px Marcellus,serif;margin:14px 2px 8px;display:flex;justify-content:space-between}.section-title small{font:10px 'DM Sans';color:var(--muted)}.upgrade,.card{width:100%;padding:11px;background:linear-gradient(110deg,#252a3a,#202434);border:1px solid #3b4153;border-radius:13px;text-align:left;display:flex;align-items:center;gap:11px}.upgrade+.upgrade{margin-top:7px}.upgrade:active,.action:active{transform:scale(.985)}.up-ico{width:39px;height:39px;display:grid;place-items:center;border-radius:11px;background:#393343;font-size:21px}.up-info{flex:1}.up-info b,.card b{font-size:12px}.up-info small{display:block;color:var(--muted);margin-top:3px;font-size:10px}.cost{color:var(--gold);font-size:11px;font-weight:700;white-space:nowrap}.upgrade.locked{opacity:.5}.quest{padding:11px 12px;border-radius:13px;background:#25263a;border:1px solid #4d4660}.questrow{display:flex;align-items:center;gap:9px}.questrow>div:nth-child(2){flex:1}.quest small{color:var(--muted);font-size:10px}.quest b{font-size:12px}.quest .claim{background:#544630;border:1px solid #8b7148;color:#ffdf9b;border-radius:9px;padding:8px;font-size:10px}.quest .claim:disabled{opacity:.45}.questbar{margin-top:8px;height:4px}.screen{display:none}.screen.active{display:block}.action{border:1px solid #65583d;border-radius:12px;background:linear-gradient(110deg,#3a342f,#292a38);padding:11px;width:100%;text-align:left;display:flex;gap:10px;align-items:center;margin:8px 0}.action span:last-child{margin-left:auto;color:var(--gold);font-size:11px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.zone{display:block;text-align:left;width:100%;padding:12px;border:1px solid #41475a;background:#222839;border-radius:12px}.zone.current{border-color:var(--gold)}.zone.lock{opacity:.45}.zone b{display:block;margin-top:6px}.zone small{color:var(--muted);font-size:10px}.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(470px,100%);padding:9px 17px calc(9px + env(safe-area-inset-bottom));background:#171b29ed;backdrop-filter:blur(12px);border-top:1px solid #34394b;display:flex;justify-content:space-around;z-index:8}.tab{border:0;background:none;color:#8990a2;font-size:10px;display:grid;gap:3px;justify-items:center}.tab span{font-size:20px}.tab.active{color:var(--gold)}.toast{position:fixed;top:15px;left:50%;transform:translate(-50%,-15px);opacity:0;background:#343044;border:1px solid #74634d;color:#ffe4a9;padding:10px 14px;border-radius:99px;z-index:10;transition:.25s;white-space:nowrap;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}.damage{position:fixed;z-index:5;color:#fff3c4;font-size:23px;font-weight:800;text-shadow:0 2px 5px #000;pointer-events:none;animation:float .75s ease-out forwards}@keyframes float{to{transform:translateY(-70px);opacity:0}}.hint{font-size:10px;color:#858da0;text-align:center;margin:10px}
+</style></head><body><main class="shell"><header class="top"><div class="brand">KRÓLESTWA <span>CIENIA</span></div><div class="rank" id="rank"></div></header><section class="resources"><div class="resource"><span class="ico">🪙</span><div><small>Złoto</small><b id="gold"></b></div></div><div class="resource"><span class="ico">🔷</span><div><small>Esencja</small><b id="essence"></b></div></div></section><div class="xp"><div class="xp-label"><span id="xpLabel">Doświadczenie</span><span id="xpText"></span></div><div class="bar"><div class="fill xpfill" id="xpFill"></div></div></div>
+<div class="screen active" id="fightScreen"><button class="world" id="worldButton"><b id="worldName">🌲 Szepczący Las</b><small>ZMIEŃ KRAINĘ ›</small></button><section class="hero" id="arena"><div class="moon"></div><div class="mountain back"></div><div class="mountain"></div><div class="ground"></div><div class="hpbox"><div class="hphead"><span id="mobName"></span><span id="hpText"></span></div><div class="bar"><div class="fill hpfill" id="hpFill"></div></div></div><div class="monster" id="monster"><div class="beast"><div class="eyes"><i></i><i></i></div><div class="snout"></div></div></div><div class="tap-hint">DOTKNIJ POTWORA, ABY ZAATAKOWAĆ</div></section><div class="section-title">Umiejętności <small id="powerLabel"></small></div><div class="grid"><button class="action" id="skill"><span>✨</span><b>Cięcie ducha</b><span id="skillCost">🔷 3</span></button><button class="action" id="potion"><span>🧪</span><b>Mikstura mocy</b><span id="potionCost">🪙 30</span></button></div><div class="section-title">Kuźnia <small>ulepszaj swój oręż</small></div><button class="upgrade" id="sword"><span class="up-ico">🗡️</span><span class="up-info"><b>Ostrze wędrowca</b><small id="swordDesc"></small></span><span class="cost" id="swordCost"></span></button><button class="upgrade" id="auto"><span class="up-ico">🛡️</span><span class="up-info"><b>Najemnik</b><small id="autoDesc"></small></span><span class="cost" id="autoCost"></span></button><div class="section-title">Zadanie <small id="killCount"></small></div><div class="quest"><div class="questrow"><span style="font-size:22px">📜</span><div><b id="questName"></b><br><small id="questProgress"></small></div><button class="claim" id="claim">Odbierz</button></div><div class="bar questbar"><div class="fill xpfill" id="questFill"></div></div></div></div>
+<div class="screen" id="mapScreen"><div class="section-title">Odkryte krainy <small>wybierz cel wyprawy</small></div><div class="grid" id="zones"></div><p class="hint">Nowe krainy otwierają się wraz z twoim poziomem.</p></div>
+<div class="screen" id="bagScreen"><div class="section-title">Ekwipunek <small>twój ekwipunek</small></div><div id="equipment"></div><div class="section-title">Relikty</div><div class="card"><span class="up-ico">🔮</span><span class="up-info"><b id="relicName">Brak reliktu</b><small>Relikt wzmacnia każdy twój cios.</small></span><span class="cost" id="relicCost"></span></div></div>
+<div class="screen" id="moreScreen"><div class="section-title">Dziennik wyprawy</div><div class="card"><span>🏆</span><span class="up-info"><b id="stats"></b><small>Każdy potwór przybliża cię do legendy.</small></span></div><button class="action" id="reset"><span>♻️</span><b>Rozpocznij od nowa</b><span>reset</span></button><p class="hint">Postępy zapisują się automatycznie na tym urządzeniu.</p></div></main><nav class="tabs"><button class="tab active" data-screen="fightScreen"><span>⚔️</span>Walka</button><button class="tab" data-screen="bagScreen"><span>🎒</span>Ekwipunek</button><button class="tab" data-screen="mapScreen"><span>🗺️</span>Mapa</button><button class="tab" data-screen="moreScreen"><span>☰</span>Dziennik</button></nav><div class="toast" id="toast"></div>
 <script>
-const KEY='reset66-game-v4';
-let s=JSON.parse(localStorage.getItem(KEY)||'null')||{day:1,xp:0,streak:0,weight:120,done:{},days:{},ach:[],missed:0,lastDate:null,summary:{}};
-function localDate(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-function diffDays(a,b){return Math.round((new Date(b+'T00:00:00')-new Date(a+'T00:00:00'))/86400000)}
-function stage(){if(s.day<=7)return['START',6000,1,2300];if(s.day<=14)return['NAWYK',6500,1.25,2300];if(s.day<=21)return['RUCH',7000,1.5,2300];if(s.day<=28)return['STABILIZACJA',7500,1.5,2250];if(s.day<=35)return['KONDYCJA',8000,1.5,2250];if(s.day<=42)return['PROGRES',8500,1.75,2250];if(s.day<=49)return['FORMA',9000,1.75,2200];if(s.day<=56)return['NOWY STANDARD',9500,1.75,2200];return['RESET',10000,2,2200]}
-function missions(){let[x,st,w,cal]=stage();return[['water',`💧 Woda — minimum ${w} l`,10],['steps',`🚶 Kroki — minimum ${st.toLocaleString('pl-PL')}`,20],['cal',`🍽️ Kalorie — około ${cal} kcal`,20],['breaks','🪑 Przerwy od siedzenia',10],['sleep','😴 Sen — zadbaj o regularność',10]]}
-const A=[['first','🎮','Pierwszy dzień',()=>s.day>=1],['week','🔥','7 dni RESET',()=>s.day>=7],['xp500','⚡','500 XP',()=>s.xp>=500],['steps50','👟','50k kroków',()=>Object.values(s.days).reduce((a,d)=>a+(d.steps||0),0)>=50000],['minus5','📉','-5 kg',()=>s.weight<=115],['month','🏆','30 dni',()=>s.day>=30],['tenk','🚀','10k kroków',()=>Object.values(s.days).some(d=>(d.steps||0)>=10000)],['minus10','💪','-10 kg',()=>s.weight<=110],['reset','👑','RESET COMPLETE',()=>s.weight<=90]];
-function save(){localStorage.setItem(KEY,JSON.stringify(s))}
-function showNotice(t,type='ok'){let n=document.getElementById('notice');n.textContent=t;n.className='notice show '+type;setTimeout(()=>n.className='notice',4500)}
-function completed(day){return Object.values(s.done[day]||{}).filter(Boolean).length>=4}
-function syncCalendar(){
- let today=localDate();if(!s.lastDate){s.lastDate=today;save();return}
- let gap=diffDays(s.lastDate,today);if(gap<=0)return;
- for(let i=0;i<gap;i++){if(!completed(s.day)){s.missed++;s.xp=Math.max(0,s.xp-50);s.streak=0}else{s.streak++}if(s.day<66)s.day++}
- s.lastDate=today;save();showNotice('🌙 Nowy dzień! Sprawdź swoje nowe misje.','gold')
+const $=id=>document.getElementById(id), KEY='shadowClickerV2';const zones=[{name:'Szepczący Las',icon:'🌲',unlock:1,mob:['Leśny upiór','Kolczasty wilk','Strażnik mchu']},{name:'Zatopione Mokradła',icon:'🪷',unlock:5,mob:['Bagienny topielec','Żarłoczna pijawka','Strażnik torfowisk']},{name:'Mroźne Wierchy',icon:'🏔️',unlock:10,mob:['Lodowy wilk','Zmarznięty rycerz','Widmo śnieżycy']},{name:'Popielne Pustkowia',icon:'🌋',unlock:18,mob:['Popielny wędrowiec','Ognisty żuk','Smok z popiołów']}];const base={gold:0,essence:0,damage:1,auto:0,level:1,xp:0,kills:0,hp:30,maxHp:30,zone:0,quest:0,claimed:0,relic:0,potions:0,companions:0};let s={...base,...JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('shadowClicker')||'{}')};let toastTimer,skillReady=true;const fmt=n=>Math.floor(n).toLocaleString('pl-PL'),save=()=>localStorage.setItem(KEY,JSON.stringify(s)),notify=t=>{let x=$('toast');x.textContent=t;x.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>x.classList.remove('show'),1700)};const swordCost=()=>Math.ceil(20*Math.pow(1.55,s.damage-1)),autoCost=()=>Math.ceil(65*Math.pow(1.8,s.auto)),relicCost=()=>Math.ceil(8*Math.pow(1.7,s.relic)),zone=()=>zones[Math.min(s.zone,zones.length-1)],mob=()=>zone().mob[Math.floor((s.level+s.kills)%zone().mob.length)],isBoss=()=>s.kills>0&&s.kills%10===0,compCost=()=>6+5*s.companions;
+function render(){ $('gold').textContent=fmt(s.gold);$('essence').textContent=fmt(s.essence);$('rank').textContent='⚔ '+(s.level<5?'NOWICJUSZ':s.level<12?'ŁOWCA CIENI':s.level<25?'MISTRZ OSTRZA':'LEGENDA')+' · '+s.level;$('worldName').textContent=zone().icon+' '+zone().name;$('mobName').textContent=mob()+' · Poziom '+s.level;$('hpText').textContent=fmt(s.hp)+' / '+fmt(s.maxHp);$('hpFill').style.width=Math.max(0,100*s.hp/s.maxHp)+'%';$('powerLabel').textContent='Siła ciosu: '+s.damage;$('swordCost').textContent='🪙 '+fmt(swordCost());$('swordDesc').textContent='+'+Math.max(1,s.relic+1)+' obrażeń na klik · poziom '+s.damage;$('autoCost').textContent='🪙 '+fmt(autoCost());$('autoDesc').textContent=s.auto+' najemników · atak co 2 s';$('killCount').textContent=s.kills+' pokonanych';$('xpText').textContent=fmt(s.xp)+' / '+fmt(s.level*20);$('xpFill').style.width=Math.min(100,100*s.xp/(s.level*20))+'%';$('xpLabel').textContent='Poziom '+s.level;$('questName').textContent='Łowca potworów';$('questProgress').textContent=Math.min(s.quest,5)+' / 5 pokonanych · nagroda: 40 złota';$('questFill').style.width=Math.min(100,s.quest*20)+'%';$('claim').disabled=s.quest<5||s.claimed>=Math.floor(s.quest/5);$('claim').textContent=s.claimed>=Math.floor(s.quest/5)?'Odebrane':s.quest>=5?'Odbierz':'W toku';$('potionCost').textContent='🪙 '+fmt(30+15*s.potions);$('relicName').textContent=s.relic?'Kamień echa · poziom '+s.relic:'Kamień echa';$('relicCost').textContent='🔷 '+fmt(relicCost());$('stats').textContent='Pokonane potwory: '+s.kills+' · poziom: '+s.level+' · najemnicy: '+s.auto;$('sword').classList.toggle('locked',s.gold<swordCost());$('auto').classList.toggle('locked',s.gold<autoCost());$('skillCost').textContent=skillReady?'🔷 3':'odnowienie';$('equipment').innerHTML='<button class="action"><span>🗡️</span><b>Ostrze wędrowca</b><span>+'+s.damage+' ATK</span></button><button class="action"><span>🧥</span><b>Płaszcz zwiadowcy</b><span>+'+s.auto+' pomocników</span></button>';renderZones()}
+function renderZones(){$('zones').innerHTML=zones.map((z,i)=>'<button class="zone '+(i===s.zone?'current ':'')+(s.level<z.unlock?'lock':'')+'" data-zone="'+i+'">'+z.icon+'<b>'+z.name+'</b><small>'+(s.level<z.unlock?'Od poziomu '+z.unlock:i===s.zone?'Obecna kraina':'Potwory: '+z.mob[0])+'</small></button>').join('');document.querySelectorAll('[data-zone]').forEach(b=>b.onclick=()=>{let i=+b.dataset.zone;if(s.level<zones[i].unlock)return notify('Ta kraina wymaga poziomu '+zones[i].unlock);s.zone=i;s.maxHp=Math.ceil(30*Math.pow(1.22,s.level-1)*(1+i*.25));s.hp=s.maxHp;save();render();show('fightScreen');notify('Wyruszasz: '+zone().name)})}
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.screen===id));window.scrollTo({top:0,behavior:'smooth'})}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>show(b.dataset.screen));$('worldButton').onclick=()=>show('mapScreen');
+function attack(mult=1){let dealt=Math.max(1,Math.floor(s.damage*mult));s.hp-=dealt;const r=$('monster').getBoundingClientRect(),d=document.createElement('div');d.className='damage';d.textContent='-'+dealt;d.style.left=(r.left+r.width/2-12)+'px';d.style.top=(r.top+r.height/2-10)+'px';document.body.append(d);setTimeout(()=>d.remove(),750);if(s.hp<=0){let reward=8+s.level*3+zone().unlock;s.gold+=reward;s.essence+=1+Math.floor(s.level/4);s.kills++;s.quest++;s.xp+=10+zone().unlock;s.level++;if(s.xp>=s.level*20){s.xp-=s.level*20;s.level++;s.essence+=2;notify('Awans! Otrzymujesz 2 esencje')}s.maxHp=Math.ceil(30*Math.pow(1.22,s.level-1)*(1+s.zone*.25));s.hp=s.maxHp;notify('Pokonano potwora! +'+reward+' złota')}render();save()}$('monster').onpointerdown=e=>{e.preventDefault();attack()};$('arena').onpointerdown=e=>{if(['arena','mountain','ground'].some(c=>e.target.classList.contains(c)))attack()};$('sword').onclick=()=>{let c=swordCost();if(s.gold<c)return notify('Za mało złota');s.gold-=c;s.damage++;render();save();notify('Ostrze ulepszone!')};$('auto').onclick=()=>{let c=autoCost();if(s.gold<c)return notify('Za mało złota');s.gold-=c;s.auto++;render();save();notify('Najemnik dołącza do walki!')};$('skill').onclick=()=>{if(!skillReady)return notify('Umiejętność jeszcze się odnawia');if(s.essence<3)return notify('Potrzebujesz 3 esencji');s.essence-=3;skillReady=false;attack(5);render();save();let n=5;const t=setInterval(()=>{n--;if(n<=0){skillReady=true;clearInterval(t);render()}else $('skillCost').textContent=n+' s'},1000)};$('potion').onclick=()=>{let c=30+15*s.potions;if(s.gold<c)return notify('Za mało złota');s.gold-=c;s.potions++;s.damage+=2;render();save();notify('Mikstura mocy: +2 do siły!')};$('claim').onclick=()=>{if(s.quest<5||s.claimed>=Math.floor(s.quest/5))return;s.gold+=40;s.claimed++;render();save();notify('Zadanie wykonane! +40 złota')};$('relicCost').parentElement.onclick=()=>{let c=relicCost();if(s.essence<c)return notify('Za mało esencji');s.essence-=c;s.relic++;s.damage+=3;render();save();notify('Kamień echa wzmacnia twój cios!')};$('reset').onclick=()=>{if(!confirm('Na pewno rozpocząć przygodę od nowa? Cały zapis zostanie usunięty.'))return;s={...base};save();render();show('fightScreen');notify('Nowa przygoda rozpoczęta')};setInterval(()=>{if(s.auto)attack(s.auto)},2000);render();
+</script><style>
+.hero.boss{border-color:#d58d61;box-shadow:inset 0 0 45px #b64c3355,0 0 18px #b64c3333}.hero.boss .beast{background:linear-gradient(145deg,#b87a67,#603e57 75%);border-color:#e5b06e;transform:scale(1.16)}.hero.boss .moon{background:#e98965;box-shadow:0 0 38px #ef785b99}
+</style>
+<script>
+// Rozszerzenie przygody: boss co dziesięć zwycięstw, osiągnięcia i towarzysz.
+s.companions=s.companions||0;
+const baseAttack=attack,baseRender=render;
+function bossNow(){return s.kills>0&&s.kills%10===0}
+function drawExtras(){
+  const arena=$('arena');arena.classList.toggle('boss',bossNow());
+  if(bossNow())$('mobName').textContent='🐲 BOSS · '+$('mobName').textContent.replace(/^.*? · /,'');
+  let bag=$('bagScreen');if(!$('companionCard')){let box=document.createElement('div');box.innerHTML='<div class="section-title">Towarzysze <small>wsparcie w walce</small></div><button class="upgrade" id="companionCard"><span class="up-ico">🦊</span><span class="up-info"><b>Ognisty lis</b><small id="companionText"></small></span><span class="cost" id="companionPrice"></span></button>';bag.append(box)}
+  $('companionText').textContent=s.companions+' lisów · każdy dodaje 2 siły ciosu';$('companionPrice').textContent='🔷 '+(6+s.companions*5);
+  $('companionCard').onclick=()=>{let price=6+s.companions*5;if(s.essence<price)return notify('Za mało esencji');s.essence-=price;s.companions++;s.damage+=2;save();render();notify('Ognisty lis dołącza do drużyny! +2 do siły')};
+  let more=$('moreScreen');if(!$('achievementList')){let section=document.createElement('section');section.innerHTML='<div class="section-title">Osiągnięcia <small>twoje dokonania</small></div><div id="achievementList"></div>';more.append(section)}
+  const goals=[[1,'Pierwsza krew','Pokonaj pierwszego potwora','🏅'],[10,'Pogromca bossów','Pokonaj pierwszego bossa','🐲'],[25,'Legenda krain','Pokonaj 25 potworów','👑'],[50,'Postrach cieni','Pokonaj 50 potworów','🌟']];
+  $('achievementList').innerHTML=goals.map(g=>'<div class="card" style="margin:6px 0;opacity:'+(s.kills>=g[0]?'1':'.45')+'"><span>'+g[3]+'</span><span class="up-info"><b>'+g[1]+'</b><small>'+g[2]+'</small></span><span class="cost">'+(s.kills>=g[0]?'✓':'🔒')+'</span></div>').join('');
 }
-function render(){
- let m=missions(),d=s.done[s.day]||{},cnt=Object.values(d).filter(Boolean).length,[name]=stage(),lev=Math.floor(s.xp/100)+1;
- document.getElementById('day').textContent=s.day+'/66';document.getElementById('xp').textContent=s.xp+' XP';document.getElementById('streak').textContent=s.streak+' 🔥';document.getElementById('weight').textContent=(+s.weight||120).toFixed(1)+' kg';document.getElementById('level').textContent='LEVEL '+lev;document.getElementById('avatarLvl').textContent='LEVEL '+lev;document.getElementById('stage').textContent=name;document.getElementById('unlock').textContent='DZIEŃ '+s.day;document.getElementById('done').textContent=cnt+'/5';
- let p=s.xp%100;document.getElementById('fill').style.width=p+'%';document.getElementById('next').textContent=(100-p)+' XP do kolejnego poziomu';
- document.getElementById('tasks').innerHTML=m.map(t=>`<div class="task ${d[t[0]]?'done':''}"><button class="check" onclick="toggle('${t[0]}')">${d[t[0]]?'✓':''}</button><div class="tt">${t[1]}</div><div class="pts">+${t[2]} XP</div></div>`).join('');
- document.getElementById('ach').innerHTML=A.map(a=>{let ok=a[3](),got=s.ach.includes(a[0]);return`<div class="badge ${ok||got?'':'lock'}"><div class="ico">${ok||got?a[1]:'🔒'}</div><small>${a[2]}</small></div>`}).join('');
- document.getElementById('achcount').textContent=s.ach.length+'/'+A.length;
- let x=s.days[s.day]||{};wi.value=x.weight||'';ci.value=x.cal||'';si.value=x.steps||'';wa.value=x.water||'';
- let summary=s.summary[s.day];document.getElementById('summary').className='card complete summary '+(summary?'show':'');
- if(summary){document.getElementById('sumTitle').textContent='+'+(summary.xp||0)+' XP ZDOBYTE';document.getElementById('sumSub').textContent='Dzień '+s.day+' ukończony • '+summary.count+'/5 misji • streak '+s.streak+' 🔥';document.getElementById('rewards').innerHTML=`<div class="reward"><span>🎯 Misje wykonane</span><b>${summary.count}/5</b></div><div class="reward"><span>⭐ Zdobyte XP</span><b>+${summary.xp} XP</b></div><div class="reward"><span>🔥 Streak</span><b>${s.streak} dni</b></div>`}}
-function toggle(id){let d=s.done[s.day]||(s.done[s.day]={}),t=missions().find(x=>x[0]===id),add=d[id]?-t[2]:t[2];d[id]=!d[id];s.xp=Math.max(0,s.xp+add);save();render(); updateCharacterStats();if(completed(s.day))finishDay()}
-function finishDay(){if(s.summary[s.day])return;let count=Object.values(s.done[s.day]||{}).filter(Boolean).length;let bonus=50;s.xp+=bonus;s.streak++;s.summary[s.day]={xp:bonus,count};for(const a of A)if(a[3]()&&!s.ach.includes(a[0]))s.ach.push(a[0]);save();render();showNotice('🎉 DZIEŃ UKOŃCZONY! +50 XP BONUSU','ok')}
-function saveDay(){let st=stage(),d=s.done[s.day]||(s.done[s.day]={}),weight=+wi.value||null,cal=+ci.value||null,steps=+si.value||null,water=+wa.value||null;s.days[s.day]={weight,cal,steps,water};if(weight)s.weight=weight;let gained=0;if(water>=st[2]&&!d.water){d.water=1;s.xp+=10;gained+=10}if(steps>=st[1]&&!d.steps){d.steps=1;s.xp+=20;gained+=20}if(cal>=st[3]-100&&cal<=st[3]+100&&!d.cal){d.cal=1;s.xp+=20;gained+=20}for(const a of A)if(a[3]()&&!s.ach.includes(a[0]))s.ach.push(a[0]);save();render();showNotice(gained?'✅ RAPORT ZAPISANY • +'+gained+' XP':'✅ RAPORT ZAPISANY','ok');if(completed(s.day))finishDay()}
-function clock(){let n=new Date();document.getElementById('clock').textContent=n.toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
-if(!s.lastDate)s.lastDate=localDate();syncCalendar();render();clock();setInterval(clock,1000);setInterval(()=>{syncCalendar();render()},15000);
-
-function showPanel(panel){
-  const home = document.querySelectorAll('body > .card, main > .card');
-  const cp = document.getElementById('characterPanel');
-  const navH = document.getElementById('navHome');
-  const navC = document.getElementById('navCharacter');
-  if(panel === 'character'){
-    cp.classList.add('active');
-    navC.classList.add('active'); navH.classList.remove('active');
-    document.querySelectorAll('.daily-only').forEach(e=>e.style.display='none');
-  } else {
-    cp.classList.remove('active');
-    navH.classList.add('active'); navC.classList.remove('active');
-    document.querySelectorAll('.daily-only').forEach(e=>e.style.display='');
-  }
-  updateCharacterStats();
+render=function(){baseRender();drawExtras()};
+attack=function(mult=1){let was=bossNow(),before=s.kills;baseAttack(mult);if(s.kills>before){if(was){let extra=(8+s.level*3)*7;s.gold+=extra;s.essence+=8;notify('Boss pokonany! Dodatkowe '+extra+' złota i 8 esencji')}else if(bossNow()){s.maxHp*=7;s.hp=s.maxHp}save();render()}};
+render();
+</script><style>
+.itemrow{display:flex;align-items:center;gap:9px;padding:10px;margin:7px 0;border:1px solid #3b4153;border-radius:12px;background:#222839}.itemrow .up-info{flex:1}.itemrow small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.itemrow button{background:#413a31;border:1px solid #7c6847;color:#ffe1a1;border-radius:8px;padding:7px;font-size:10px}.daily{margin:8px 0;padding:12px;border-radius:13px;border:1px solid #554a3e;background:#292834}.daily button{border:1px solid #8b7148;background:#544630;color:#ffdf9b;border-radius:9px;padding:8px 10px;font-size:10px}.daily button:disabled{opacity:.45}.daily-head{display:flex;justify-content:space-between;align-items:center}.daily small{color:var(--muted);font-size:10px}
+</style>
+<script>
+// Łupy, zakładanie wyposażenia i codzienne zlecenie.
+const gearAttack=attack,gearRender=render;
+s.bagItems=s.bagItems||[];s.gear=s.gear||{weapon:null,armor:null};s.dailyDate=s.dailyDate||'';s.dailyKills=s.dailyKills||0;s.dailyClaimed=s.dailyClaimed||false;
+function localDay(){let d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+if(s.dailyDate!==localDay()){s.dailyDate=localDay();s.dailyKills=0;s.dailyClaimed=false;save()}
+function addPanels(){
+ let bag=$('bagScreen');if(!$('lootInventory')){let sec=document.createElement('section');sec.innerHTML='<div class="section-title">Łupy <small id="lootCount"></small></div><div id="lootInventory"></div>';bag.append(sec)}
+ let more=$('moreScreen');if(!$('dailyTask')){let d=document.createElement('section');d.innerHTML='<div class="section-title">Dzienne zlecenie</div><div class="daily"><div class="daily-head"><b>🗡️ Oczyść szlak</b><button id="dailyClaim">Odbierz nagrodę</button></div><small id="dailyProgress"></small><div class="bar questbar"><div class="fill xpfill" id="dailyFill"></div></div></div>';more.prepend(d)}
+ let inventory=$('lootInventory');$('lootCount').textContent=s.bagItems.length+' przedmiotów';
+ let equipped=s.gear;let slots=[['weapon','⚔️','Broń'],['armor','🛡️','Zbroja']];
+ let summary=slots.map(([slot,ico,label])=>{let it=s.bagItems.find(x=>x.id===equipped[slot]);return '<div class="itemrow"><span>'+ico+'</span><span class="up-info"><b>'+label+': '+(it?it.name:'brak')+'</b><small>'+(it?(slot==='weapon'?'+'+it.atk+' siły':'+'+it.hp+' zdrowia'):'Załóż zdobyty przedmiot z listy poniżej.')+'</small></span></div>'}).join('');
+ let items=s.bagItems.slice().reverse().map(it=>'<div class="itemrow"><span>'+it.icon+'</span><span class="up-info"><b>'+it.name+'</b><small>'+(it.slot==='weapon'?'Broń · +'+it.atk+' siły':'Zbroja · +'+it.hp+' zdrowia')+'</small></span><button data-equip="'+it.id+'">'+(equipped[it.slot]===it.id?'Założone':'Załóż')+'</button></div>').join('');
+ inventory.innerHTML=summary+(items||'<div class="hint">Pokonuj potwory — czasem zostawiają po sobie łup.</div>');
+ inventory.querySelectorAll('[data-equip]').forEach(btn=>btn.onclick=()=>equipItem(btn.dataset.equip));
+ $('dailyProgress').textContent=Math.min(5,s.dailyKills)+' / 5 potworów pokonanych · nagroda: 100 złota i 5 esencji';$('dailyFill').style.width=Math.min(100,s.dailyKills*20)+'%';$('dailyClaim').disabled=s.dailyKills<5||s.dailyClaimed;$('dailyClaim').textContent=s.dailyClaimed?'Odebrano':s.dailyKills>=5?'Odbierz':'W toku';$('dailyClaim').onclick=()=>{if(s.dailyKills<5||s.dailyClaimed)return;s.gold+=100;s.essence+=5;s.dailyClaimed=true;save();render();notify('Zlecenie wykonane! +100 złota, +5 esencji')}
 }
-
-function updateCharacterStats(){
-  const s = state || {};
-  const missions = s.missions || {};
-  const done = Object.values(missions).filter(Boolean).length;
-  const completedDays = s.completedDays || Math.max(0,(s.day||1)-1);
-  const streak = s.streak || 0;
-  const xp = s.xp || 0;
-
-  // Stats are game values, not medical measurements.
-  const condition = Math.min(100, 10 + completedDays*2 + (done>=4?3:0) + Math.floor(streak/3));
-  const strength = Math.min(100, 10 + completedDays + Math.floor(xp/100));
-  const discipline = Math.min(100, 10 + completedDays*2 + streak*2 + (done===5?4:0));
-  const energy = Math.min(100, 10 + completedDays + (done>=3?5:0) + Math.floor(streak/2));
-
-  [['Condition',condition],['Strength',strength],['Discipline',discipline],['Energy',energy]].forEach(([n,v])=>{
-    const val=document.getElementById('stat'+n), bar=document.getElementById('bar'+n);
-    if(val) val.textContent=v;
-    if(bar) bar.style.width=v+'%';
-  });
-
-  const note=document.getElementById('characterNote');
-  if(note){
-    note.textContent = `Poziom postaci: ${s.level||1}. Statystyki są elementem gry i rosną dzięki regularnemu wykonywaniu misji. Ukończone dni: ${completedDays}. Aktualna seria: ${streak}.`;
-  }
+function equipItem(id){let it=s.bagItems.find(x=>x.id===id);if(!it)return;let old=s.bagItems.find(x=>x.id===s.gear[it.slot]);if(it.slot==='weapon')s.damage+=it.atk-(old?old.atk:0);else{let delta=it.hp-(old?old.hp:0);s.maxHp+=delta;s.hp=Math.min(s.maxHp,s.hp+delta)}s.gear[it.slot]=id;save();render();notify('Założono: '+it.name)}
+function dropLoot(){if(Math.random()>.38)return;let slot=Math.random()<.55?'weapon':'armor',tier=Math.random()<.12?3:Math.random()<.38?2:1,serial=s.kills+Math.floor(Math.random()*9999),names=slot==='weapon'?['Sztylet podróżnika','Miecz z mroźnej stali','Ostrze księżycowe']:['Skórzany kaftan','Pancerz strażnika','Zbroja popiołów'],icons=slot==='weapon'?['🗡️','⚔️','🌙']:['🧥','🛡️','🔥'];let it={id:'loot-'+Date.now()+'-'+serial,slot,tier,name:names[tier-1],icon:icons[tier-1],atk:slot==='weapon'?tier*(1+Math.floor(s.level/5)):0,hp:slot==='armor'?tier*(8+Math.floor(s.level*2)):0};s.bagItems.push(it);notify('Łup: '+it.name+'!')}
+render=function(){gearRender();addPanels()};
+attack=function(mult=1){let before=s.kills;gearAttack(mult);if(s.kills>before){s.dailyKills=Math.min(5,s.dailyKills+1);dropLoot();save();render()}};
+render();
+</script><style>
+.talent{padding:11px;margin:7px 0;border:1px solid #3b4153;border-radius:12px;background:#222839;display:flex;align-items:center;gap:10px}.talent .up-info{flex:1}.talent small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.talent button{border:1px solid #7c6847;background:#413a31;color:#ffe1a1;border-radius:8px;padding:7px 9px;font-size:10px}.talent button:disabled{opacity:.4}.bestiary{display:grid;grid-template-columns:1fr 1fr;gap:7px}.beast-entry{padding:10px;border:1px solid #3b4153;border-radius:11px;background:#222839;font-size:11px}.beast-entry small{display:block;color:var(--muted);margin-top:4px}
+</style>
+<script>
+// Talenty i bestiariusz.
+s.talents=s.talents||{power:0,trade:0,arcane:0};s.bestiary=s.bestiary||{};
+const talentAttack=attack;
+function talentPoints(){return Math.max(0,Math.floor((s.level-1)/3)-s.talents.power-s.talents.trade-s.talents.arcane)}
+function drawTalents(){
+ let more=$('moreScreen');if(!$('talentTree')){let sec=document.createElement('section');sec.innerHTML='<div class="section-title">Drzewko talentów <small id="talentPoints"></small></div><div id="talentTree"></div><div class="section-title">Bestiariusz <small id="bestiaryCount"></small></div><div class="bestiary" id="bestiary"></div>';more.append(sec)}
+ $('talentPoints').textContent=talentPoints()+' punktów do wydania';
+ const list=[['power','Moc ostrza','Każdy rang zwiększa obrażenia o 10%.','⚔️'],['trade','Złota żyła','Każdy rang zwiększa złoto z walk o 12%.','🪙'],['arcane','Szept run','Każdy rang zwiększa esencję z walk o 15%.','🔷']];
+ $('talentTree').innerHTML=list.map(t=>'<div class="talent"><span>'+t[3]+'</span><span class="up-info"><b>'+t[1]+' · '+s.talents[t[0]]+'/3</b><small>'+t[2]+'</small></span><button data-talent="'+t[0]+'" '+(talentPoints()<=0||s.talents[t[0]]>=3?'disabled':'')+'>Ulepsz</button></div>').join('');
+ $('talentTree').querySelectorAll('[data-talent]').forEach(b=>b.onclick=()=>{if(!talentPoints()||s.talents[b.dataset.talent]>=3)return;s.talents[b.dataset.talent]++;save();render();notify('Talent ulepszony!')});
+ let entries=Object.entries(s.bestiary).sort((a,b)=>b[1]-a[1]);$('bestiaryCount').textContent=entries.length+' odkrytych';$('bestiary').innerHTML=entries.length?entries.map(([n,c])=>'<div class="beast-entry">👾 '+n+'<small>Pokonano: '+c+'</small></div>').join(''):'<div class="hint">Nie spotkano jeszcze żadnych stworzeń.</div>';
 }
-
-
-function showPanel(panel){
-  const cp = document.getElementById('characterPanel');
-  const ip = document.getElementById('inventoryPanel');
-  const navH = document.getElementById('navHome');
-  const navC = document.getElementById('navCharacter');
-  const navI = document.getElementById('navInventory');
-
-  [cp,ip].forEach(e=>e&&e.classList.remove('active'));
-  [navH,navC,navI].forEach(e=>e&&e.classList.remove('active'));
-
-  if(panel==='character'){
-    cp&&cp.classList.add('active'); navC&&navC.classList.add('active');
-  } else if(panel==='inventory'){
-    ip&&ip.classList.add('active'); navI&&navI.classList.add('active');
-  } else {
-    navH&&navH.classList.add('active');
-    document.querySelectorAll('.daily-only').forEach(e=>e.style.display='');
-  }
-  if(panel!=='home'){
-    document.querySelectorAll('.daily-only').forEach(e=>e.style.display='none');
-  }
-  updateCharacterStats();
-  renderInventory();
+const talentRender=render;render=function(){talentRender();drawTalents()};
+attack=function(mult=1){let before=s.kills,g0=s.gold,e0=s.essence,enemy=(bossNow()?'Boss · ':'')+mob();talentAttack(mult*(1+s.talents.power*.1));if(s.kills>before){s.bestiary[enemy]=(s.bestiary[enemy]||0)+1;s.gold+=Math.floor((s.gold-g0)*s.talents.trade*.12);s.essence+=Math.floor((s.essence-e0)*s.talents.arcane*.15);save();render()}};
+render();
+</script><style>
+.hero.dungeon-boss{border-color:#e4b85f;box-shadow:inset 0 0 55px #a6374d77,0 0 22px #e4b85f55}.hero.dungeon-boss .beast{background:linear-gradient(145deg,#b45e67,#4a314f);border-color:#f5ca70;transform:scale(1.22)}.expedition{margin:10px 0;padding:12px;border:1px solid #665744;border-radius:14px;background:linear-gradient(120deg,#302b37,#222738)}.exp-head{display:flex;align-items:center;gap:10px}.exp-head .up-info{flex:1}.exp-head small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.exp-head button,.class-option button{border:1px solid #8b7148;background:#544630;color:#ffdf9b;border-radius:9px;padding:8px 10px;font-size:10px}.expedition .bar{margin-top:9px;height:5px}.class-option{padding:10px;margin:7px 0;border:1px solid #3b4153;border-radius:12px;background:#222839;display:flex;align-items:center;gap:9px}.class-option .up-info{flex:1}.class-option small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.class-option.active{border-color:#d9b66b}
+</style>
+<script>
+// Update 2.0: wybór klasy i pięcioetapowa wyprawa do lochu.
+s.heroClass=s.heroClass||'wanderer';s.dungeon=s.dungeon||{active:false,floor:0};
+const expansionBaseAttack=attack,expansionBaseRender=render;
+const classData={wanderer:{name:'Wędrowiec',icon:'🧭',desc:'Zrównoważony styl, bez dodatkowych kosztów.',mult:1},guardian:{name:'Strażnik',icon:'🛡️',desc:'+20% obrażeń w każdym ataku.',mult:1.2},rune:{name:'Runomanta',icon:'🔮',desc:'+1 esencja za każde zwycięstwo.',mult:1.05},ranger:{name:'Łowca',icon:'🏹',desc:'+20% złota za pokonanego przeciwnika.',mult:1.1}};
+const dungeonMobs=['Zwiadowca otchłani','Pajęczy kapłan','Strażnik krypt','Rycerz bez twarzy','Władca szczeliny'];
+function refreshExpansion(){
+ let fight=$('fightScreen');if(!$('expedition')){let sec=document.createElement('section');sec.className='expedition';sec.id='expedition';sec.innerHTML='<div class="exp-head"><span style="font-size:25px">🕳️</span><span class="up-info"><b>Lochy Zapomnianych</b><small id="expText"></small></span><button id="expButton"></button></div><div class="bar"><div class="fill xpfill" id="expFill"></div></div>';fight.append(sec)}
+ let bag=$('bagScreen');if(!$('classPanel')){let sec=document.createElement('section');sec.id='classPanel';sec.innerHTML='<div class="section-title">Wybierz profesję <small>zmiana: 10 🔷</small></div><div id="classOptions"></div>';bag.prepend(sec)}
+ const cl=classData[s.heroClass]||classData.wanderer;$('classOptions').innerHTML=Object.entries(classData).filter(([k])=>k!=='wanderer').map(([k,v])=>'<div class="class-option '+(s.heroClass===k?'active':'')+'"><span>'+v.icon+'</span><span class="up-info"><b>'+v.name+'</b><small>'+v.desc+'</small></span><button data-class="'+k+'">'+(s.heroClass===k?'Wybrana':s.heroClass==='wanderer'?'Wybierz':'10 🔷')+'</button></div>').join('');
+ $('classOptions').querySelectorAll('[data-class]').forEach(b=>b.onclick=()=>{let k=b.dataset.class;if(s.heroClass!==k&&s.heroClass!=='wanderer'){if(s.essence<10)return notify('Zmiana profesji kosztuje 10 esencji');s.essence-=10}s.heroClass=k;save();render();notify('Wybrano profesję: '+classData[k].name)});
+ let run=s.dungeon;$('expButton').textContent=run.active?'Porzuć':'Wejdź';$('expText').textContent=run.active?'Etap '+(run.floor+1)+' z 5 · finałowym przeciwnikiem jest boss':'5 etapów · boss i gwarantowany rzadki łup';$('expFill').style.width=run.active?(run.floor/5*100)+'%':'0%';$('expButton').onclick=()=>{if(!run.active){if(s.level<3)return notify('Lochy odblokują się na poziomie 3');s.dungeon={active:true,floor:0};s.maxHp=Math.ceil(s.maxHp*1.4);s.hp=s.maxHp;save();render();notify('Wyprawa rozpoczęta!')}else if(confirm('Porzucić bieżącą wyprawę?')){s.dungeon={active:false,floor:0};save();render();notify('Wyprawa przerwana')}};
+ if(run.active){let stage=Math.min(4,run.floor);$('mobName').textContent='🕳️ '+dungeonMobs[stage]+' · Etap '+(stage+1);$('arena').classList.toggle('dungeon-boss',stage===4)}else $('arena').classList.remove('dungeon-boss');
 }
-
-function renderInventory(){
-  const grid=document.getElementById('itemGrid');
-  const next=document.getElementById('nextReward');
-  if(!grid) return;
-
-  const s=state||{};
-  const days=s.completedDays||Math.max(0,(s.day||1)-1);
-  const level=s.level||1;
-  const xp=s.xp||0;
-
-  const items=[
-    {day:1,icon:'👟',name:'Buty Początkującego',desc:'+1 do Kondycji',tag:'DZIEŃ 1'},
-    {day:3,icon:'🥤',name:'Butelka RESET',desc:'+1 do Energii',tag:'DZIEŃ 3'},
-    {day:7,icon:'🧢',name:'Czapka Nawyków',desc:'+2 do Dyscypliny',tag:'DZIEŃ 7'},
-    {day:14,icon:'🎧',name:'Słuchawki Ruchu',desc:'+2 do Energii',tag:'DZIEŃ 14'},
-    {day:21,icon:'🏋️',name:'Rękawice Treningowe',desc:'+3 do Siły',tag:'DZIEŃ 21'},
-    {day:30,icon:'⌚',name:'Zegarek Formy',desc:'+3 do Kondycji',tag:'DZIEŃ 30'},
-    {day:45,icon:'🥇',name:'Odznaka Wojownika',desc:'+4 do Dyscypliny',tag:'DZIEŃ 45'},
-    {day:66,icon:'👑',name:'Korona RESET 66',desc:'Legendarny przedmiot końcowy',tag:'DZIEŃ 66'}
-  ];
-
-  grid.innerHTML=items.map(it=>{
-    const unlocked=days>=it.day;
-    return `<div class="item ${unlocked?'unlocked':'locked'}">
-      <div class="tag">${it.tag}</div>
-      <div class="icon">${unlocked?it.icon:'🔒'}</div>
-      <div class="itemname">${it.name}</div>
-      <div class="desc">${unlocked?it.desc:'Odblokuj po ukończeniu '+it.day+'. dnia.'}</div>
-    </div>`;
-  }).join('');
-
-  const nextItem=items.find(it=>days<it.day);
-  if(next){
-    next.innerHTML=nextItem
-      ? `${nextItem.icon} <b>${nextItem.name}</b> — pozostało ${nextItem.day-days} dni.`
-      : `👑 <b>Korona RESET 66</b> zdobyta! Ukończyłeś całą kampanię.`;
-  }
+render=function(){expansionBaseRender();refreshExpansion()};
+attack=function(mult=1){let before=s.kills,gold0=s.gold,ess0=s.essence;expansionBaseAttack(mult*(classData[s.heroClass]||classData.wanderer).mult);if(s.kills>before){let goldGain=s.gold-gold0,essGain=s.essence-ess0;if(s.heroClass==='ranger')s.gold+=Math.floor(goldGain*.2);if(s.heroClass==='rune')s.essence+=1; if(s.dungeon.active){s.dungeon.floor++;if(s.dungeon.floor>=5){s.dungeon.active=false;s.gold+=250+50*s.level;s.essence+=15;s.bagItems=s.bagItems||[];s.bagItems.push({id:'vault-'+Date.now(),slot:'weapon',tier:3,name:'Ostrze ze Szczeliny',icon:'🌌',atk:8+Math.floor(s.level/3),hp:0});notify('Lochy ukończone! Skarb czeka w ekwipunku.')}else{let factor=s.dungeon.floor===4?5:1.4;s.maxHp=Math.ceil(s.maxHp*factor);s.hp=s.maxHp;notify('Etap '+s.dungeon.floor+' ukończony — naprzód!')}}save();render()}};
+$('skill').onclick=()=>{if(!skillReady)return notify('Umiejętność jeszcze się odnawia');if(s.essence<3)return notify('Potrzebujesz 3 esencji');s.essence-=3;skillReady=false;let power=s.heroClass==='guardian'?8:s.heroClass==='rune'?6:5;attack(power);render();save();let n=5;const timer=setInterval(()=>{n--;if(n<=0){skillReady=true;clearInterval(timer);render()}else $('skillCost').textContent=n+' s'},1000)};
+render();
+</script><style>
+.camp-card{margin:7px 0;padding:11px;border:1px solid #3b4153;border-radius:12px;background:linear-gradient(110deg,#252a3a,#202434);display:flex;align-items:center;gap:10px}.camp-card .up-info{flex:1}.camp-card small{display:block;color:var(--muted);font-size:10px;margin-top:3px}.camp-card button{border:1px solid #8b7148;background:#544630;color:#ffdf9b;border-radius:9px;padding:8px;font-size:10px}.camp-card button:disabled{opacity:.4}.idle-card{padding:12px;border:1px solid #4d6658;border-radius:13px;background:#202f2a;margin:8px 0}.idle-card b{font-size:13px}.idle-card small{display:block;color:#a8c4ae;font-size:10px;margin:4px 0 9px}.idle-card button{border:1px solid #668d6c;background:#324c39;color:#d5f2d7;border-radius:9px;padding:8px 11px;font-size:11px}
+</style>
+<script>
+// Obóz i skarbiec z dochodem offline.
+s.camp=s.camp||{market:0,runes:0};s.pendingGold=s.pendingGold||0;s.pendingEssence=s.pendingEssence||0;
+const campRender=render,campAttack=attack,baseSave=save;
+let now=Date.now(),away=Math.min(8*60*60*1000,Math.max(0,now-(s.lastSeen||now))),minutes=Math.floor(away/60000);
+if(minutes>0&&s.auto>0){let rate=s.auto*.025*(1+s.camp.market*.2);s.pendingGold+=Math.floor(minutes*rate);s.pendingEssence+=Math.floor(minutes*s.camp.runes*.006)}
+s.lastSeen=now;save=function(){s.lastSeen=Date.now();baseSave()};
+function drawCamp(){let more=$('moreScreen');if(!$('campSection')){let sec=document.createElement('section');sec.id='campSection';sec.innerHTML='<div class="section-title">Obóz najemników <small>rozwijaj zaplecze</small></div><div id="idleCard"></div><div id="campUpgrades"></div>';more.prepend(sec)}
+ let g=s.pendingGold||0,e=s.pendingEssence||0;$('idleCard').innerHTML='<div class="idle-card"><b>📦 Skarbiec z nieobecności</b><small>'+(g||e?'Pod twoją nieobecność drużyna zdobyła '+g+' złota i '+e+' esencji.':'Drużyna czeka na twoje zlecenia. Najemnicy zdobywają złoto, gdy jesteś poza grą.')+'</small><button id="idleClaim" '+(g+e?'':'disabled')+'>Odbierz łupy</button></div>';$('idleClaim').onclick=()=>{if(!s.pendingGold&&!s.pendingEssence)return;s.gold+=s.pendingGold;s.essence+=s.pendingEssence;s.pendingGold=0;s.pendingEssence=0;save();render();notify('Odebrano łupy z obozu!')};
+ const rows=[['market','🏪','Targ obozowy','Zwiększa łupy ze zwycięstw i dochód offline.',50*Math.pow(2,s.camp.market)],['runes','🪄','Krąg run','Dodatkowa esencja z walk i nieobecności.',80*Math.pow(2,s.camp.runes)]];
+ $('campUpgrades').innerHTML=rows.map(r=>'<div class="camp-card"><span>'+r[1]+'</span><span class="up-info"><b>'+r[2]+' · poziom '+s.camp[r[0]]+'</b><small>'+r[3]+'</small></span><button data-camp="'+r[0]+'">🪙 '+Math.ceil(r[4])+'</button></div>').join('');
+ $('campUpgrades').querySelectorAll('[data-camp]').forEach(b=>b.onclick=()=>{let k=b.dataset.camp,cost=Math.ceil(k==='market'?50*Math.pow(2,s.camp.market):80*Math.pow(2,s.camp.runes));if(s.gold<cost)return notify('Za mało złota');s.gold-=cost;s.camp[k]++;save();render();notify('Obóz ulepszony!')});
 }
-
-
-const LOOT_TABLE = [
-  {rarity:'common', chance:55, icon:'🧦', name:'Skarpetki Bohatera', desc:'+1 Energia'},
-  {rarity:'common', chance:55, icon:'🧴', name:'Bidon Regeneracji', desc:'+1 Kondycja'},
-  {rarity:'common', chance:55, icon:'🧢', name:'Czapka Determinacji', desc:'+1 Dyscyplina'},
-  {rarity:'rare', chance:25, icon:'👟', name:'Buty Sprintera', desc:'+3 Kondycja'},
-  {rarity:'rare', chance:25, icon:'🧤', name:'Rękawice Siły', desc:'+3 Siła'},
-  {rarity:'rare', chance:25, icon:'🎧', name:'Słuchawki Skupienia', desc:'+3 Dyscyplina'},
-  {rarity:'epic', chance:15, icon:'⌚', name:'Zegarek Żelaznej Serii', desc:'+5 Energia i +2 Dyscyplina'},
-  {rarity:'epic', chance:15, icon:'🥋', name:'Strój Wojownika', desc:'+5 Siła i +2 Kondycja'},
-  {rarity:'legendary', chance:5, icon:'👑', name:'Korona RESET', desc:'+10 do wszystkich statystyk'}
-];
-
-function ensureLoot(){
-  if(!state.loot) state.loot=[];
-  if(!state.lootClaimedDay) state.lootClaimedDay=0;
+render=function(){campRender();drawCamp()};
+attack=function(mult=1){let gold0=s.gold,ess0=s.essence;campAttack(mult);if(s.kills&&s.gold>gold0){let diff=s.gold-gold0;s.gold+=Math.floor(diff*s.camp.market*.05);s.essence+=s.camp.runes}save();render()};
+render();
+</script><style>
+.forge{margin:10px 0;padding:12px;border:1px solid #655841;border-radius:14px;background:linear-gradient(120deg,#302c31,#222738)}.forge small{display:block;color:var(--muted);font-size:10px;margin:5px 0 9px}.forge button{border:1px solid #8b7148;background:#544630;color:#ffdf9b;border-radius:9px;padding:8px 10px;font-size:10px}.forge button:disabled{opacity:.4}.forge-actions{display:flex;gap:7px;flex-wrap:wrap}
+</style>
+<script>
+// Warsztat: odzyskuj materiały ze zbędnych łupów i wykuwaj nowy sprzęt.
+s.shards=s.shards||0;s.forgeCrafts=s.forgeCrafts||0;
+const forgeRender=render,forgeAttack=attack;
+function drawForge(){let bag=$('bagScreen');if(!$('forgeWorkshop')){let sec=document.createElement('section');sec.innerHTML='<div class="section-title">Warsztat kowala <small id="shardCount"></small></div><div class="forge" id="forgeWorkshop"><b>⚒️ Kuźnia krain</b><small id="forgeInfo"></small><div class="forge-actions"><button id="craftWeapon"></button><button id="craftArmor"></button><button id="salvageLoot">Rozłóż zbędne łupy</button></div></div>';bag.append(sec)}
+ $('shardCount').textContent=s.shards+' odłamków';$('forgeInfo').textContent='Wykuty sprzęt ma moc zależną od poziomu '+s.level+'.';let cost=40+10*s.level;$('craftWeapon').textContent='🗡️ Wykuj broń · 4 odłamki + '+cost+' 🪙';$('craftArmor').textContent='🛡️ Wykuj zbroję · 4 odłamki + '+cost+' 🪙';$('craftWeapon').disabled=s.shards<4||s.gold<cost;$('craftArmor').disabled=s.shards<4||s.gold<cost;
+ $('craftWeapon').onclick=()=>craft('weapon');$('craftArmor').onclick=()=>craft('armor');$('salvageLoot').onclick=()=>{let equipped=Object.values(s.gear||{}).filter(Boolean),items=s.bagItems||[],salvage=items.filter(it=>!equipped.includes(it.id));if(!salvage.length)return notify('Nie masz zbędnych łupów');s.shards+=salvage.reduce((n,it)=>n+(it.tier||1),0);s.bagItems=items.filter(it=>equipped.includes(it.id));save();render();notify('Odzyskano materiały z '+salvage.length+' przedmiotów')}
 }
-
-function chooseLoot(){
-  const roll=Math.random()*100;
-  let rarity=roll<5?'legendary':roll<20?'epic':roll<45?'rare':'common';
-  const pool=LOOT_TABLE.filter(x=>x.rarity===rarity);
-  return pool[Math.floor(Math.random()*pool.length)];
-}
-
-function openLoot(){
-  ensureLoot();
-  const completedDays=state.completedDays||Math.max(0,(state.day||1)-1);
-  if(completedDays<=0 || state.lootClaimedDay>=completedDays){
-    const r=document.getElementById('lootResult');
-    if(r){
-      r.classList.add('show');
-      document.getElementById('lootRarity').textContent='BRA SKRZYNI';
-      document.getElementById('lootRarity').className='rarity';
-      document.getElementById('lootIcon').textContent='🔒';
-      document.getElementById('lootName').textContent='Najpierw ukończ dzień';
-      document.getElementById('lootDesc').textContent='Po ukończeniu dnia wróć tutaj i odbierz nagrodę.';
-    }
-    return;
-  }
-
-  const item=chooseLoot();
-  state.loot.push({...item,day:completedDays});
-  state.lootClaimedDay=completedDays;
-  localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
-
-  const r=document.getElementById('lootResult');
-  r.classList.add('show');
-  const rr=document.getElementById('lootRarity');
-  rr.textContent=item.rarity.toUpperCase();
-  rr.className='rarity rarity-'+item.rarity;
-  document.getElementById('lootIcon').textContent=item.icon;
-  document.getElementById('lootName').textContent=item.name;
-  document.getElementById('lootDesc').textContent=item.desc;
-  document.getElementById('chestIcon').textContent='✨';
-  document.getElementById('openLootBtn').textContent='SKRZYNIA OTWARTA';
-  document.getElementById('openLootBtn').disabled=true;
-  renderLootHistory();
-}
-
-function renderLootHistory(){
-  ensureLoot();
-  const el=document.getElementById('lootHistory');
-  if(!el) return;
-  if(!state.loot.length){el.textContent='Brak zdobytych przedmiotów.';return;}
-  el.innerHTML=state.loot.slice().reverse().slice(0,8).map(x=>
-    `<div class="loot-row"><div class="smallicon">${x.icon}</div><div><b>${x.name}</b><div style="font-size:11px;color:#888">Dzień ${x.day} • ${x.rarity}</div></div></div>`
-  ).join('');
-}
-
-const originalShowPanel = window.showPanel;
-window.showPanel = function(panel){
-  const lp=document.getElementById('lootPanel');
-  const navL=document.getElementById('navLoot');
-  if(panel==='loot'){
-    if(typeof originalShowPanel==='function') originalShowPanel('home');
-    document.querySelectorAll('.daily-only').forEach(e=>e.style.display='none');
-    document.getElementById('characterPanel')?.classList.remove('active');
-    document.getElementById('inventoryPanel')?.classList.remove('active');
-    lp?.classList.add('active');
-    document.querySelectorAll('.navbtn').forEach(e=>e.classList.remove('active'));
-    navL?.classList.add('active');
-    renderLootHistory();
-  } else {
-    lp?.classList.remove('active');
-    if(typeof originalShowPanel==='function') originalShowPanel(panel);
-  }
-};
-
-ensureLoot();
-
-
-const SHOP_ITEMS=[
- {id:'water',icon:'🥤',name:'Napój Energii',desc:'+2 Energia',price:80},
- {id:'shoes',icon:'👟',name:'Buty Treningowe',desc:'+2 Kondycja',price:120},
- {id:'gloves',icon:'🥊',name:'Rękawice',desc:'+2 Siła',price:120},
- {id:'journal',icon:'📓',name:'Dziennik Dyscypliny',desc:'+2 Dyscyplina',price:150}
-];
-
-function ensureEconomy(){
- if(typeof state.coins!=='number') state.coins=0;
- if(typeof state.upgradeLevel!=='number') state.upgradeLevel=0;
- if(!state.purchased) state.purchased=[];
-}
-
-function renderShop(){
- ensureEconomy();
- const bal=document.getElementById('coinBalance'); if(bal) bal.textContent=state.coins;
- const grid=document.getElementById('shopGrid'); if(!grid)return;
- grid.innerHTML=SHOP_ITEMS.map(it=>{
-   const bought=state.purchased.includes(it.id);
-   return `<div class="shop-item"><div class="icon">${it.icon}</div><h3>${it.name}</h3><p>${it.desc}</p>
-   <div class="price">💰 ${it.price}</div>
-   <button class="buybtn" onclick="buyItem('${it.id}')" ${bought||state.coins<it.price?'disabled':''}>${bought?'KUPIONE':'KUP'}</button></div>`;
- }).join('');
- const cost=100+state.upgradeLevel*75;
- const info=document.getElementById('upgradeInfo');
- if(info) info.textContent=`Poziom ulepszenia: ${state.upgradeLevel} • Następny poziom: +1 do wszystkich statystyk • Koszt: ${cost} 💰`;
- const btn=document.getElementById('upgradeBtn');
- if(btn){btn.disabled=state.coins<cost;btn.textContent=`ULEPSZ • ${cost} 💰`;}
-}
-
-function buyItem(id){
- ensureEconomy();
- const it=SHOP_ITEMS.find(x=>x.id===id);
- if(!it||state.purchased.includes(id)||state.coins<it.price)return;
- state.coins-=it.price; state.purchased.push(id);
- localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
- renderShop(); updateCharacterStats();
-}
-
-function buyUpgrade(){
- ensureEconomy();
- const cost=100+state.upgradeLevel*75;
- if(state.coins<cost)return;
- state.coins-=cost; state.upgradeLevel++;
- localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
- renderShop(); updateCharacterStats();
-}
-
-function awardCoins(amount){
- ensureEconomy(); state.coins+=amount;
- localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
-}
-
-const previousShowPanel=window.showPanel;
-window.showPanel=function(panel){
- const sp=document.getElementById('shopPanel'), nav=document.getElementById('navShop');
- if(panel==='shop'){
-   document.querySelectorAll('.navbtn').forEach(e=>e.classList.remove('active'));
-   document.querySelectorAll('.character-panel,.inventory-panel,.loot-panel').forEach(e=>e.classList.remove('active'));
-   document.querySelectorAll('.daily-only').forEach(e=>e.style.display='none');
-   sp?.classList.add('active'); nav?.classList.add('active'); renderShop();
- }else{
-   sp?.classList.remove('active');
-   if(typeof previousShowPanel==='function') previousShowPanel(panel);
- }
-};
-ensureEconomy();
-renderShop();
-
-
-const BOSS_DATA=[
- {day:7,name:'Strażnik Nawyków',icon:'👹',hp:120,reward:100},
- {day:14,name:'Władca Wymówek',icon:'👺',hp:180,reward:160},
- {day:21,name:'Bestia Zmęczenia',icon:'🐲',hp:260,reward:220},
- {day:30,name:'Tytan Starego Stylu',icon:'🗿',hp:360,reward:300},
- {day:45,name:'Demon Chaosu',icon:'😈',hp:500,reward:450},
- {day:66,name:'FINAL BOSS: Stare Życie',icon:'👑',hp:666,reward:1000}
-];
-
-function ensureBoss(){
- if(!state.bossWins) state.bossWins=[];
- if(!state.bossState) state.bossState=null;
-}
-
-function getAvailableBoss(){
- const days=state.completedDays||Math.max(0,(state.day||1)-1);
- return BOSS_DATA.slice().reverse().find(b=>days>=b.day && !state.bossWins.includes(b.day));
-}
-
-function bossPower(){
- ensureEconomy();
- const s=state;
- return 10+(s.level||1)*2+(s.upgradeLevel||0)*3+(s.loot?s.loot.length:0);
-}
-
-function startBoss(){
- const b=getAvailableBoss();
- if(!b)return null;
- if(!state.bossState || state.bossState.day!==b.day){
-   state.bossState={day:b.day,hp:b.hp,playerHp:100};
-   localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
- }
- return b;
-}
-
-function renderBoss(){
- ensureBoss();
- const b=startBoss();
- const log=document.getElementById('bossLog');
- const btn=document.getElementById('attackBtn');
- const win=document.getElementById('bossWin');
- if(!b){
-   document.getElementById('bossName').textContent='Brak aktywnego bossa';
-   document.getElementById('bossAvatar').textContent='🏆';
-   document.getElementById('bossHpText').textContent='Ukończ odpowiedni etap, aby odblokować walkę.';
-   document.getElementById('bossHpBar').style.width='0%';
-   btn.disabled=true;
-   log.textContent='Bossowie pojawiają się po ukończeniu wybranych etapów kampanii.';
-   return;
- }
- const st=state.bossState;
- document.getElementById('bossName').textContent=b.name;
- document.getElementById('bossAvatar').textContent=b.icon;
- document.getElementById('bossHpText').textContent=`${Math.max(0,st.hp)} / ${b.hp} HP`;
- document.getElementById('bossHpBar').style.width=(Math.max(0,st.hp)/b.hp*100)+'%';
- document.getElementById('playerPower').textContent=bossPower();
- document.getElementById('playerHp').textContent=st.playerHp;
- btn.disabled=st.hp<=0||st.playerHp<=0;
- if(st.hp<=0){
-   win.classList.add('show');
-   win.innerHTML=`🏆 <b>${b.name} pokonany!</b><br><br>+${b.reward} 💰 WALUTY RESET<br>+100 XP`;
- }else{
-   win.classList.remove('show');
- }
-}
-
-function attackBoss(){
- const b=getAvailableBoss(); if(!b)return;
- const st=state.bossState||startBoss();
- if(st.hp<=0||st.playerHp<=0)return;
- const power=bossPower();
- const damage=Math.max(1,power+Math.floor(Math.random()*6));
- st.hp=Math.max(0,st.hp-damage);
- let msg=`Zadajesz ${damage} obrażeń.`;
- if(st.hp>0){
-   const retaliation=Math.max(1,5+Math.floor(Math.random()*7));
-   st.playerHp=Math.max(0,st.playerHp-retaliation);
-   msg+=` Boss odpowiada za ${retaliation} HP.`;
- }
- if(st.hp<=0){
-   state.bossWins.push(b.day);
-   state.coins=(state.coins||0)+b.reward;
-   state.xp=(state.xp||0)+100;
-   state.level=1+Math.floor((state.xp||0)/100);
-   state.bossState=null;
-   msg+=` Boss pokonany! Otrzymujesz ${b.reward} 💰 i 100 XP.`;
- }
- localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
- document.getElementById('bossLog').textContent=msg;
- renderBoss();
- if(typeof renderShop==='function')renderShop();
- if(typeof renderInventory==='function')renderInventory();
- if(typeof updateCharacterStats==='function')updateCharacterStats();
-}
-
-const oldShowPanel2=window.showPanel;
-window.showPanel=function(panel){
- const bp=document.getElementById('bossPanel'), nav=document.getElementById('navBoss');
- if(panel==='boss'){
-   document.querySelectorAll('.navbtn').forEach(e=>e.classList.remove('active'));
-   document.querySelectorAll('.character-panel,.inventory-panel,.loot-panel,.shop-panel').forEach(e=>e.classList.remove('active'));
-   document.querySelectorAll('.daily-only').forEach(e=>e.style.display='none');
-   bp?.classList.add('active');nav?.classList.add('active');renderBoss();
- }else{
-   bp?.classList.remove('active');
-   if(typeof oldShowPanel2==='function')oldShowPanel2(panel);
- }
-};
-ensureBoss();
-
-
-
-/* RESET 66 FINAL SCREEN ROUTER */
-window.showPanel = function(panel){
-  const allCards = document.querySelectorAll('main.app > .card');
-  const panels = {
-    character:'characterPanel',
-    inventory:'inventoryPanel',
-    loot:'lootPanel',
-    shop:'shopPanel',
-    boss:'bossPanel'
-  };
-
-  // First hide every content card.
-  allCards.forEach(card => card.style.display = 'none');
-
-  // Clear active navigation.
-  document.querySelectorAll('.navbtn').forEach(btn => btn.classList.remove('active'));
-
-  if(panel === 'home'){
-    document.getElementById('navHome')?.classList.add('active');
-
-    // Show the normal game/home cards, but never the secondary screens.
-    allCards.forEach(card => {
-      if(!card.classList.contains('character-panel') &&
-         !card.classList.contains('inventory-panel') &&
-         !card.classList.contains('loot-panel') &&
-         !card.classList.contains('shop-panel') &&
-         !card.classList.contains('boss-panel')){
-        card.style.display = '';
-      }
-    });
-    return;
-  }
-
-  const id=panels[panel];
-  const target=id ? document.getElementById(id) : null;
-  if(target){
-    target.style.display='block';
-    target.classList.add('active');
-  }
-
-  const navId='nav'+panel.charAt(0).toUpperCase()+panel.slice(1);
-  document.getElementById(navId)?.classList.add('active');
-
-  if(panel==='character') updateCharacterStats?.();
-  if(panel==='inventory') renderInventory?.();
-  if(panel==='loot'){
-    ensureLoot?.();
-    renderLootHistory?.();
-    const btn=document.getElementById('openLootBtn');
-    const completedDays=state.completedDays||Math.max(0,(state.day||1)-1);
-    if(btn){
-      btn.disabled = completedDays<=0 || state.lootClaimedDay>=completedDays;
-      btn.textContent = completedDays<=0 ? 'UKOŃCZ PIERWSZY DZIEŃ' :
-        (state.lootClaimedDay>=completedDays ? 'SKRZYNIA OTWARTA' : 'OTWÓRZ SKRZYNIĘ');
-    }
-  }
-  if(panel==='shop') renderShop?.();
-  if(panel==='boss') renderBoss?.();
-};
-
-// Start on the main game screen.
-window.addEventListener('DOMContentLoaded',()=>window.showPanel('home'));
+function craft(slot){let cost=40+10*s.level;if(s.shards<4||s.gold<cost)return notify('Brakuje materiałów');s.shards-=4;s.gold-=cost;s.forgeCrafts++;let n=s.forgeCrafts,tier=Math.min(3,1+Math.floor(n/3)),it=slot==='weapon'?{id:'forge-'+Date.now(),slot,tier,name:['Kuty miecz','Miecz runiczny','Ostrze królewskiego kowala'][tier-1],icon:['⚔️','🗡️','🌟'][tier-1],atk:2+Math.floor(s.level/2)+tier*2,hp:0}:{id:'forge-'+Date.now(),slot,tier,name:['Kuta kolczuga','Pancerz runiczny','Zbroja królewskiego kowala'][tier-1],icon:['🧥','🛡️','✨'][tier-1],atk:0,hp:15+s.level*3+tier*8};s.bagItems=s.bagItems||[];s.bagItems.push(it);save();render();notify('Wykuto: '+it.name+'! Znajdziesz go w łupach.')}
+render=function(){forgeRender();drawForge()};
+attack=function(mult=1){let kills=s.kills,oldLen=(s.bagItems||[]).length;forgeAttack(mult);if(s.kills>kills&&s.bagItems.length===oldLen&&Math.random()<.55){s.shards++;save();render()}};
+render();
+</script><style>
+.event-shade{position:fixed;inset:0;background:#090b12d9;backdrop-filter:blur(7px);z-index:20;display:none;align-items:center;justify-content:center;padding:18px}.event-shade.active{display:flex}.event-box{width:min(420px,100%);padding:19px;border:1px solid #766442;border-radius:18px;background:linear-gradient(145deg,#302d3b,#1a2030);box-shadow:0 20px 70px #0009}.event-box h2{font:21px Marcellus,serif;margin:0 0 6px;color:#f8d994}.event-box p{font-size:12px;color:#b9bdc9;line-height:1.5}.event-choice{width:100%;padding:12px;margin:6px 0;border:1px solid #464656;border-radius:12px;background:#252b3b;text-align:left;display:flex;gap:10px;align-items:center}.event-choice:hover{border-color:#b4945b}.event-choice span:last-child{font-size:10px;color:#aeb4c3;display:block;margin-top:3px}
+</style>
+<div class="event-shade" id="eventShade"><div class="event-box"><h2>Wydarzenie na szlaku</h2><p>Podróż przyniosła okazję. Wybierz jedną nagrodę, zanim ruszysz dalej.</p><div id="eventChoices"></div></div></div>
+<script>
+// Losowe wydarzenia z wyborem nagrody co pięć zwycięstw.
+s.pendingEvent=s.pendingEvent||null;s.eventWins=s.eventWins||0;
+const eventBaseAttack=attack,eventBaseRender=render;
+const eventLoot={gold:{icon:'🪙',name:'Kupiec z pustkowi',desc:'Przekazuje sakiewkę złota.',apply:()=>s.gold+=60+20*s.level},essence:{icon:'🔷',name:'Duch źródła',desc:'Daje garść czystej esencji.',apply:()=>s.essence+=4+Math.floor(s.level/5)},forge:{icon:'⚒️',name:'Runiczny kowal',desc:'Daje odłamki i hartuje twoją broń.',apply:()=>{s.shards+=2;s.damage+=1}}};
+function showEvent(){let box=$('eventShade');if(!s.pendingEvent){box.classList.remove('active');return}box.classList.add('active');$('eventChoices').innerHTML=s.pendingEvent.map(k=>{let e=eventLoot[k];return '<button class="event-choice" data-event="'+k+'"><span style="font-size:23px">'+e.icon+'</span><span><b>'+e.name+'</b><span>'+e.desc+'</span></span></button>'}).join('');$('eventChoices').querySelectorAll('[data-event]').forEach(b=>b.onclick=()=>{let key=b.dataset.event;eventLoot[key].apply();s.pendingEvent=null;s.eventWins++;save();render();notify('Nagroda odebrana: '+eventLoot[key].name)})}
+render=function(){eventBaseRender();showEvent()};
+attack=function(mult=1){if(s.pendingEvent)return;let before=s.kills;eventBaseAttack(mult);if(s.kills>before&&s.kills%5===0&&!s.pendingEvent){s.pendingEvent=Object.keys(eventLoot).sort(()=>Math.random()-.5);save();render()}};
+render();
+</script><script>
+const showEventBeforeGuard=showEvent;showEvent=function(){showEventBeforeGuard();$('skill').disabled=!!s.pendingEvent};
+</script><style>
+.story-card{padding:13px;margin:8px 0;border:1px solid #61543f;border-radius:14px;background:linear-gradient(130deg,#302d3b,#212738)}.story-card h3{font:17px Marcellus,serif;color:#f4d48f;margin:0 0 5px}.story-card p{font-size:11px;color:#bdc1cc;line-height:1.55;margin:5px 0 10px}.story-choice{width:100%;text-align:left;padding:10px;margin:5px 0;border:1px solid #45485a;border-radius:10px;background:#282d3e}.story-choice b{font-size:11px}.story-choice small{display:block;color:#abb1c0;font-size:10px;margin-top:3px}.story-choice:hover{border-color:#c5a360}.story-complete{font-size:11px;color:#a9d5ae}
+</style>
+<script>
+// Kampania fabularna z trwałymi wyborami i nagrodami.
+s.storyChapter=s.storyChapter||0;s.storyChoices=s.storyChoices||[];
+const chapters=[{at:5,title:'Popioły Bramy',text:'Stara brama płonie, a uchodźcy proszą o pomoc. Kupiec oferuje zapasy, zaś duch źródła obiecuje czystą esencję.',choices:[['Kieszeń kupca','100 złota',()=>s.gold+=100],['Dar źródła','6 esencji',()=>s.essence+=6]]},{at:15,title:'Dzwon Mokradeł',text:'Pod zatopioną kaplicą odzywa się dzwon. Jego echo może zahartować broń albo wskazać ukryte materiały.',choices:[['Hartowanie ostrza','+3 do siły ciosu',()=>s.damage+=3],['Sekret kowala','+4 odłamki i 3 esencje',()=>{s.shards+=4;s.essence+=3}]]},{at:30,title:'Cisza na Wierchu',text:'Na szczycie czeka samotny strażnik. Możesz przyjąć jego pieczęć ochronną lub runę, która wzmacnia atak.',choices:[['Pieczęć strażnika','+60 maksymalnego zdrowia',()=>{s.maxHp+=60;s.hp+=60}],['Runiczny sygnet','+5 do siły ciosu',()=>s.damage+=5]]},{at:50,title:'Serce Szczeliny',text:'W samym sercu ciemności odnajdujesz relikt dawnych królów. Ostatni wybór określi, jak zapisze się twoja legenda.',choices:[['Korona Świtu','+250 złota i 15 esencji',()=>{s.gold+=250;s.essence+=15}],['Ostrze Szczeliny','Legendarny miecz do ekwipunku',()=>{s.bagItems=s.bagItems||[];s.bagItems.push({id:'story-'+Date.now(),slot:'weapon',tier:3,name:'Ostrze Szczeliny',icon:'🌠',atk:12+Math.floor(s.level/2),hp:0})}]]}];
+const storyRender=render;
+function drawStory(){let more=$('moreScreen');if(!$('storyCampaign')){let sec=document.createElement('section');sec.innerHTML='<div class="section-title">Kronika Królestw <small id="storyProgress"></small></div><div id="storyCampaign"></div>';more.prepend(sec)}let c=chapters[s.storyChapter];$('storyProgress').textContent='Rozdział '+Math.min(s.storyChapter+1,chapters.length)+' / '+chapters.length;if(!c){$('storyCampaign').innerHTML='<div class="story-card"><h3>Kronika ukończona</h3><p>Twoje imię zapisano w kronikach wszystkich krain.</p><div class="story-complete">✓ Wszystkie rozdziały ukończone</div></div>';return}let ready=s.kills>=c.at;$('storyCampaign').innerHTML='<div class="story-card"><h3>Rozdział '+(s.storyChapter+1)+': '+c.title+'</h3><p>'+c.text+'</p><div class="xp-label"><span>Postęp rozdziału</span><span>'+Math.min(c.at,s.kills)+' / '+c.at+'</span></div><div class="bar"><div class="fill xpfill" style="width:'+Math.min(100,s.kills/c.at*100)+'%"></div></div>'+(ready?'<p>Wybierz, co zabierzesz w dalszą podróż:</p>'+c.choices.map((x,i)=>'<button class="story-choice" data-story="'+i+'"><b>'+x[0]+'</b><small>'+x[1]+'</small></button>').join(''):'<p>Pokonuj przeciwników, aby odkryć dalszy ciąg.</p>')+'</div>';if(ready)$('storyCampaign').querySelectorAll('[data-story]').forEach(b=>b.onclick=()=>{let choice=c.choices[+b.dataset.story];choice[2]();s.storyChoices.push(choice[0]);s.storyChapter++;save();render();notify('Kronika: '+choice[0])})}
+render=function(){storyRender();drawStory()};render();
+</script><style>
+.combo-badge{position:absolute;z-index:6;left:50%;top:54px;transform:translateX(-50%) scale(.9);padding:6px 12px;border:1px solid #d6b269;border-radius:99px;background:#292436dd;color:#ffe19b;font-weight:800;font-size:12px;letter-spacing:.5px;opacity:0;transition:.15s;pointer-events:none}.combo-badge.active{opacity:1;transform:translateX(-50%) scale(1)}.combo-badge.finisher{color:#fff3cf;background:#8d423e;border-color:#ffc66e;box-shadow:0 0 18px #ffb84788;animation:pulse .35s ease-out}@keyframes pulse{50%{transform:translateX(-50%) scale(1.18)}}
+</style>
+<script>
+// Combo ręcznych uderzeń — szybkie serie wzmacniają cios.
+s.combo=0;s.comboTime=0;let manualStrike=false;
+document.addEventListener('pointerdown',e=>{if($('arena').contains(e.target)){manualStrike=true;setTimeout(()=>manualStrike=false,0)}},true);
+const comboAttack=attack,comboRender=render;
+function drawCombo(){let badge=$('comboBadge');if(!badge){badge=document.createElement('div');badge.id='comboBadge';badge.className='combo-badge';badge.textContent='COMBO';$('arena').append(badge)}if(s.combo>0){badge.textContent='⚡ COMBO ×'+s.combo;badge.classList.add('active')}else badge.classList.remove('active')}
+render=function(){comboRender();drawCombo()};
+attack=function(mult=1){if(!manualStrike)return comboAttack(mult);let now=Date.now();if(now-s.comboTime>1200)s.combo=0;s.combo++;s.comboTime=now;let finisher=s.combo===10||s.combo===20,scale=1+Math.min(s.combo,25)*.04;if(finisher){scale*=2;s.combo=0;notify('FINISHER! Potężne uderzenie!')}comboAttack(mult*scale);drawCombo();setTimeout(()=>{if(Date.now()-s.comboTime>=1200){s.combo=0;drawCombo()}},1250)};
+render();
+</script><style>
+.tutorial-shade{position:fixed;inset:0;z-index:40;background:#090b12dc;backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:18px}.tutorial-shade.active{display:flex}.tutorial-card{width:min(430px,100%);border:1px solid #766442;border-radius:19px;background:linear-gradient(145deg,#302d3b,#1a2030);padding:20px;box-shadow:0 20px 70px #000b}.tutorial-kicker{color:#f6c76b;font-size:10px;letter-spacing:1.5px;text-transform:uppercase}.tutorial-card h2{font:23px Marcellus,serif;margin:7px 0;color:#f7e8c9}.tutorial-card p{font-size:13px;line-height:1.55;color:#c2c5cf;min-height:60px}.tutorial-progress{display:flex;gap:4px;margin:13px 0}.tutorial-progress i{height:4px;flex:1;border-radius:9px;background:#424655}.tutorial-progress i.on{background:#e6bd6a}.tutorial-actions{display:flex;gap:7px;align-items:center}.tutorial-actions button{border:1px solid #675a43;background:#292d3c;border-radius:9px;padding:9px 12px;font-size:11px}.tutorial-actions .primary{margin-left:auto;background:#5a4931;border-color:#a27e4a;color:#ffe0a0}.tour-focus{position:relative;z-index:39!important;outline:2px solid #f6c76b!important;box-shadow:0 0 0 6px #f6c76b44,0 0 28px #f6c76b99!important}
+</style>
+<div class="tutorial-shade" id="tutorialShade" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle"><div class="tutorial-card"><div class="tutorial-kicker" id="tutorialKicker"></div><h2 id="tutorialTitle"></h2><p id="tutorialText"></p><div class="tutorial-progress" id="tutorialProgress"></div><div class="tutorial-actions"><button id="tutorialBack">← Wstecz</button><button id="tutorialSkip">Pomiń</button><button class="primary" id="tutorialNext">Dalej →</button></div></div></div>
+<script>
+// Pierwsze uruchomienie: krótki, możliwy do pominięcia samouczek.
+s.tutorialDone=!!s.tutorialDone;
+const tutorialBaseAttack=attack;
+const tutorialSteps=[['Witaj w Królestwach Cienia','Zacznij przygodę w świecie pełnym potworów, skarbów i zapomnianych krain. Ten krótki przewodnik pokaże najważniejsze rzeczy.',''],['Walka i combosy','Dotykaj potwora, aby atakować. Szybkie uderzenia budują combo, a dziesiąte i dwudzieste trafienie zadają potężny cios.','#monster'],['Złoto i ulepszenia','Za zwycięstwa dostajesz złoto, esencję i czasem łupy. W Kuźni kupisz silniejszą broń, a ulepszenia najemników pomogą w walce.','#sword'],['Umiejętności','Wydawaj esencję na Cięcie ducha. Umiejętność zadaje mocne obrażenia i odnawia się po chwili. Każda profesja ma własny styl walki.','#skill'],['Ekwipunek i profesja','W zakładce Ekwipunek wybierzesz profesję, założysz łupy, rozłożysz zbędne przedmioty i wykupisz ulepszenia kuźni.','#bagTab'],['Wyprawy i dalszy rozwój','Odkrywaj krainy, podejmuj zadania i ruszaj do lochów. W Dzienniku znajdziesz kampanię, talenty, obóz i łupy zdobyte podczas nieobecności. Powodzenia!','#expedition']];
+let tutorialIndex=0,tutorialOpen=false;
+function paintTutorial(){document.querySelectorAll('.tour-focus').forEach(x=>x.classList.remove('tour-focus'));let step=tutorialSteps[tutorialIndex],target=step[2]?$(step[2].slice(1)):null;if(target){target.classList.add('tour-focus');if(step[2]==='#bagTab'){}else target.scrollIntoView({block:'center',behavior:'smooth'})}$('tutorialKicker').textContent='Przewodnik · '+(tutorialIndex+1)+' / '+tutorialSteps.length;$('tutorialTitle').textContent=step[0];$('tutorialText').textContent=step[1];$('tutorialProgress').innerHTML=tutorialSteps.map((_,i)=>'<i class="'+(i<=tutorialIndex?'on':'')+'"></i>').join('');$('tutorialBack').disabled=tutorialIndex===0;$('tutorialNext').textContent=tutorialIndex===tutorialSteps.length-1?'Zaczynamy!':'Dalej →'}
+function finishTutorial(skipped=false){tutorialOpen=false;$('tutorialShade').classList.remove('active');document.querySelectorAll('.tour-focus').forEach(x=>x.classList.remove('tour-focus'));$('skill').disabled=false;s.tutorialDone=true;save();if(!skipped)notify('Powodzenia na szlaku!')}
+$('tutorialNext').onclick=()=>{if(tutorialIndex<tutorialSteps.length-1){tutorialIndex++;paintTutorial()}else finishTutorial()};$('tutorialBack').onclick=()=>{if(tutorialIndex>0){tutorialIndex--;paintTutorial()}};$('tutorialSkip').onclick=()=>finishTutorial(true);
+if(!s.tutorialDone){tutorialOpen=true;$('tutorialShade').classList.add('active');$('skill').disabled=true;paintTutorial()}
+attack=function(mult=1){if(tutorialOpen)return;tutorialBaseAttack(mult)};
 </script></body></html>
+
+
+
+
+
