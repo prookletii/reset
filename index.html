@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f5f3ed" />
     <meta name="description" content="A quiet, local-first reader for your books." />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="LEAF" />
     <title>LEAF — a quieter way to read</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -21,6 +25,7 @@
           <p class="lede">Open a book from your device and settle into the page. Nothing is uploaded or stored online.</p>
           <button class="open-button" id="open-document" type="button"><span aria-hidden="true">＋</span> Open document</button>
           <p class="formats">PDF and EPUB files · processed locally</p>
+          <p class="formats home-screen-tip">On iPhone, use Share → Add to Home Screen for an app-style view.</p>
           <input id="document-input" type="file" accept="application/pdf,.pdf,application/epub+zip,.epub" hidden />
         </div>
         <div class="book-art" aria-hidden="true">
@@ -51,7 +56,7 @@
         <label>Theme<select id="theme-setting"><option value="light">Light</option><option value="sepia">Sepia</option><option value="dark">Dark</option></select></label>
         <label class="chapter-control">Go to section<select id="chapter-setting"><option value="">Contents</option></select></label>
       </aside>
-      <main class="reader-scroll" id="reader-scroll" tabindex="0">
+      <main class="reader-scroll" id="reader-scroll" tabindex="0" aria-label="Document text. Tap the page to hide reader controls.">
         <div class="loading-state" id="loading-state"><div class="loader"></div><p>Preparing your book…</p><span id="loading-detail">Reading the document locally</span></div>
         <article class="ebook" id="ebook" hidden></article>
         <div class="original-pages" id="original-pages" hidden></div>

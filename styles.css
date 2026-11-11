@@ -10,3 +10,8 @@
 /* Original PDF can widen for zoom; only a handful of page canvases stay in memory. */
 .original-pages{width:max-content;min-width:100%}.pdf-page{width:100%}.pdf-page canvas{max-width:none}
 .page-jump{font-size:25px}.reader-bottom{justify-content:space-around}.reader-bottom .toolbar-button{padding-left:8px;padding-right:8px}
+.reader-dialog[data-immersive="true"] .reader-bar,.reader-dialog[data-immersive="true"] .reader-bottom,.reader-dialog[data-immersive="true"] .reader-progress{display:none!important}
+.reader-dialog[data-immersive="true"] .settings-panel,.reader-dialog[data-immersive="true"] .reader-error{display:none!important}
+.reader-dialog[data-immersive="true"] .reader-scroll{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.reader-dialog[data-immersive="true"] .ebook{padding-top:clamp(20px,4vh,48px)}
+.home-screen-tip{max-width:320px;margin-top:6px;line-height:1.55}

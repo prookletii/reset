@@ -16,6 +16,10 @@ The primary mode extracts text from every PDF page in batches and presents the r
 
 Paragraph reconstruction uses text-item positions, baseline gaps, font size, and simple list and heading heuristics. Complex layouts, tables, right-to-left text, and scanned image PDFs may need OCR or manual correction. A scanned PDF is detected when it contains no extractable text; the original PDF view remains available.
 
+## Focus mode on phones
+
+Tap the reading page to hide LEAF's toolbar and navigation; tap again to restore them. Browsers that support the Fullscreen API also enter fullscreen on that tap. On iPhone, Safari does not allow a normal browser tab to hide its own controls; use **Share → Add to Home Screen** and launch LEAF from its icon to remove Safari's address and bottom toolbars. iOS still controls the system status and home-indicator areas.
+
 ## EPUB
 
 The existing file picker recognizes EPUB files, but EPUB chapter rendering is not implemented yet.

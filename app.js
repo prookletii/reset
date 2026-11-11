@@ -32,6 +32,7 @@ let pageObserver = null;
 let progressTimer = 0;
 let resizeTimer = 0;
 let currentZoom = 1;
+let immersive = false;
 let pageRenderQueue = Promise.resolve();
 const pageRenderTasks = new Map();
 const activePageElements = new Set();
@@ -592,6 +593,28 @@ function showMode(useOriginal) {
   updateProgress();
 }
 
+function setImmersiveMode(enabled) {
+  immersive = enabled;
+  dialog.dataset.immersive = String(enabled);
+  if (enabled) {
+    settingsPanel.hidden = true;
+    $('#settings-toggle').setAttribute('aria-expanded', 'false');
+  }
+  scrollArea.setAttribute('aria-label', enabled
+    ? 'Immersive reading. Tap the page to show reader controls.'
+    : 'Document text. Tap the page to hide reader controls.');
+}
+
+async function toggleImmersiveMode() {
+  const enabled = !immersive;
+  setImmersiveMode(enabled);
+  if (enabled && !document.fullscreenElement && document.fullscreenEnabled && typeof dialog.requestFullscreen === 'function') {
+    try { await dialog.requestFullscreen({ navigationUI: 'hide' }); } catch { /* CSS focus mode still works when fullscreen is unavailable. */ }
+  } else if (!enabled && document.fullscreenElement) {
+    try { await document.exitFullscreen(); } catch { /* The browser may exit fullscreen independently. */ }
+  }
+}
+
 async function openPdf(file) {
   const generation = ++loadGeneration;
   $('#reader-file-name').textContent = file.name;
@@ -603,6 +626,7 @@ async function openPdf(file) {
   ebook.hidden = true;
   originalPages.hidden = true;
   errorBox.hidden = true;
+  setImmersiveMode(false);
   dialog.showModal();
   await applyPreferences();
   scrollArea.scrollTop = 0;
@@ -659,6 +683,7 @@ function openEpub(file) {
   const paragraph = document.createElement('p');
   paragraph.textContent = 'This file was selected locally and has not been uploaded. PDF reading is available in the current reader build.';
   ebook.append(heading, paragraph);
+  setImmersiveMode(false);
   dialog.showModal();
 }
 
@@ -690,17 +715,22 @@ dialog.addEventListener('close', () => {
   documentModel = null;
   documentKey = null;
   originalMode = false;
+  setImmersiveMode(false);
+  if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
   originalPages.replaceChildren();
   ebook.replaceChildren();
   settingsPanel.hidden = true;
   $('#settings-toggle').setAttribute('aria-expanded', 'false');
 });
 
-$('#fullscreen').addEventListener('click', async () => {
-  try {
-    if (!document.fullscreenElement) await dialog.requestFullscreen();
-    else await document.exitFullscreen();
-  } catch { /* Fullscreen may not be available in every browser. */ }
+$('#fullscreen').addEventListener('click', () => { void toggleImmersiveMode(); });
+scrollArea.addEventListener('click', (event) => {
+  if (!documentModel || event.target.closest('button,a,input,select,textarea')) return;
+  if (window.getSelection?.().toString()) return;
+  void toggleImmersiveMode();
+});
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement && immersive) setImmersiveMode(false);
 });
 
 $('#settings-toggle').addEventListener('click', () => {
