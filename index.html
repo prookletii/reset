@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#f5f3ed" />
     <meta name="description" content="A quiet, local-first reader for your books." />
     <title>LEAF — a quieter way to read</title>
@@ -14,7 +14,6 @@
         <a class="brand" href="#home" aria-label="LEAF home"><span class="brand-mark" aria-hidden="true">l</span>leaf</a>
         <span class="privacy-note"><span class="privacy-dot"></span> Your books stay on this device</span>
       </header>
-
       <section class="welcome" id="home">
         <div class="welcome-copy">
           <p class="eyebrow">A little space to read</p>
@@ -30,19 +29,43 @@
           <span class="art-caption">A slower kind of page.</span>
         </div>
       </section>
-
-      <section class="reading-note" aria-label="About reading with LEAF">
-        <span class="note-icon" aria-hidden="true">✳</span>
-        <div><h2>Just you and the page.</h2><p>Choose a book to begin. Your reading experience is private, simple, and yours to shape.</p></div>
-        <span class="note-arrow" aria-hidden="true">↗</span>
-      </section>
+      <section class="reading-note" aria-label="About reading with LEAF"><span class="note-icon" aria-hidden="true">✳</span><div><h2>Just you and the page.</h2><p>Choose a book to begin. Your reading experience is private, simple, and yours to shape.</p></div><span class="note-arrow" aria-hidden="true">↗</span></section>
       <footer><span>LEAF READER</span><span>Made for unhurried reading</span></footer>
     </main>
 
     <dialog class="reader-dialog" id="reader-dialog" aria-label="Document reader">
-      <div class="reader-bar"><button class="icon-button" id="close-reader" aria-label="Close reader">←</button><div class="reader-title"><span class="reader-file-name" id="reader-file-name"></span><span class="reader-file-type" id="reader-file-type"></span></div><button class="icon-button" id="fullscreen" aria-label="Toggle fullscreen">⛶</button></div>
-      <div class="reader-content" id="reader-content"></div>
+      <div class="reader-progress"><span id="progress-fill"></span></div>
+      <header class="reader-bar">
+        <button class="icon-button" id="close-reader" aria-label="Close reader">←</button>
+        <div class="reader-title"><span class="reader-file-name" id="reader-file-name"></span><span class="reader-status" id="reader-status">Preparing your book…</span></div>
+        <span class="position-label" id="position-label">—</span>
+        <button class="toolbar-button mode-button" id="mode-toggle" type="button">Original PDF</button>
+        <button class="icon-button" id="settings-toggle" aria-label="Reading settings" aria-expanded="false">Aa</button>
+        <button class="icon-button fullscreen-button" id="fullscreen" aria-label="Toggle fullscreen">⛶</button>
+      </header>
+      <aside class="settings-panel" id="settings-panel" hidden aria-label="Reading settings">
+        <label>Font<select id="font-setting"><option value="Georgia, 'Times New Roman', serif">Georgia</option><option value="system-ui, sans-serif">System Sans</option><option value="Literata, Georgia, serif">Literata</option></select></label>
+        <label>Size <span id="font-size-value">19px</span><input id="font-size-setting" type="range" min="14" max="30" value="19" /></label>
+        <label>Line spacing <span id="line-height-value">1.65</span><input id="line-height-setting" type="range" min="1.3" max="2" step="0.05" value="1.65" /></label>
+        <label>Reading width<select id="width-setting"><option value="narrow">Narrow</option><option value="standard" selected>Standard</option><option value="wide">Wide</option></select></label>
+        <label>Theme<select id="theme-setting"><option value="light">Light</option><option value="sepia">Sepia</option><option value="dark">Dark</option></select></label>
+        <label class="chapter-control">Go to section<select id="chapter-setting"><option value="">Contents</option></select></label>
+      </aside>
+      <main class="reader-scroll" id="reader-scroll" tabindex="0">
+        <div class="loading-state" id="loading-state"><div class="loader"></div><p>Preparing your book…</p><span id="loading-detail">Reading the document locally</span></div>
+        <article class="ebook" id="ebook" hidden></article>
+        <div class="original-pages" id="original-pages" hidden></div>
+      </main>
+      <nav class="reader-bottom" aria-label="Reading navigation">
+        <button class="icon-button page-jump" id="previous-page" type="button" aria-label="Previous PDF page">‹</button>
+        <button class="toolbar-button" id="previous-part" type="button">↑ Previous</button>
+        <span class="bottom-position" id="bottom-position">—</span>
+        <div class="page-controls" id="original-controls" hidden><button class="icon-button small" id="zoom-out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button class="icon-button small" id="zoom-in" aria-label="Zoom in">＋</button></div>
+        <button class="toolbar-button" id="next-part" type="button">Next ↓</button>
+        <button class="icon-button page-jump" id="next-page" type="button" aria-label="Next PDF page">›</button>
+      </nav>
+      <div class="reader-error" id="reader-error" hidden role="alert"></div>
     </dialog>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>
