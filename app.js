@@ -38,12 +38,37 @@ const activePageElements = new Set();
 
 function getPdfJs() {
   if (!pdfjsPromise) {
+    addReadableStreamAsyncIteratorSupport();
     pdfjsPromise = import(PDFJS_MODULE).then((lib) => {
       lib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
       return lib;
     });
   }
   return pdfjsPromise;
+}
+
+function addReadableStreamAsyncIteratorSupport() {
+  if (typeof ReadableStream === 'undefined' || !Symbol.asyncIterator) return;
+  const prototype = ReadableStream.prototype;
+  if (prototype[Symbol.asyncIterator]) return;
+  const values = prototype.values || function values({ preventCancel = false } = {}) {
+    const reader = this.getReader();
+    return {
+      async next() {
+        const result = await reader.read();
+        if (result.done) reader.releaseLock();
+        return result;
+      },
+      async return(value) {
+        if (preventCancel) reader.releaseLock();
+        else await reader.cancel(value);
+        return { done: true, value };
+      },
+      [Symbol.asyncIterator]() { return this; },
+    };
+  };
+  if (!prototype.values) prototype.values = values;
+  prototype[Symbol.asyncIterator] = prototype.values;
 }
 
 function yieldToBrowser() {
@@ -121,7 +146,7 @@ async function applyPreferences() {
   const width = $('#width-setting');
   const theme = $('#theme-setting');
   const literata = font.querySelector('[value^="Literata"]');
-  if (literata && !document.fonts.check('16px Literata')) literata.hidden = true;
+  if (literata && (!document.fonts?.check || !document.fonts.check('16px Literata'))) literata.hidden = true;
   font.value = preferences.font || font.value;
   size.value = String(preferences.size || size.value);
   leading.value = String(preferences.leading || leading.value);

@@ -4,7 +4,7 @@ LEAF is a mobile first, local only ebook reader concept. It has no backend, acco
 
 ## Run locally
 
-Serve this folder over HTTP (for example, use the VS Code Live Server extension or `python -m http.server`) and open the local address. PDF.js 6.3.289 is loaded on demand from a version pinned jsDelivr CDN URL; the PDF.js worker performs document parsing and the selected PDF bytes are passed directly to PDF.js in the browser. The PDF file itself is never sent to the CDN. An internet connection is needed the first time PDF.js is opened. This app currently does not include an offline service worker or a bundled PDF.js distribution.
+Serve this folder over HTTP (for example, use the VS Code Live Server extension or `python -m http.server`) and open the local address. PDF.js 6.3.289 is loaded on demand from a version pinned jsDelivr CDN URL; the PDF.js worker performs document parsing and the selected PDF bytes are passed directly to PDF.js in the browser. LEAF adds a small `ReadableStream` async-iterator compatibility shim before loading PDF.js for Safari/WebKit. The PDF file itself is never sent to the CDN. An internet connection is needed the first time PDF.js is opened. This app currently does not include an offline service worker or a bundled PDF.js distribution.
 
 ## Publish on GitHub Pages
 
