@@ -1,24 +1,15 @@
-# Królestwa Cienia
+# LEAF
 
-Mobilna gra clicker RPG. Paczka jest gotowa do publikacji na GitHub Pages — bez instalowania frameworków ani budowania projektu.
+LEAF is a mobile first, local only ebook reader concept. It has no backend or account system.
 
-## Publikacja na GitHub Pages
+## Current phase: reader shell and local import
 
-1. Rozpakuj `krolestwa-cienia-github-pages.zip`.
-2. Utwórz na GitHubie **publiczne repozytorium** (na przykład `krolestwa-cienia`).
-3. Wgraj do głównego katalogu repozytorium wszystkie pliki z rozpakowanej paczki: `index.html`, `favicon.svg` i `.nojekyll`.
-4. Otwórz w repozytorium **Settings → Pages**.
-5. W sekcji **Build and deployment** ustaw **Source: Deploy from a branch**.
-6. Wybierz gałąź `main` i katalog `/(root)`, a następnie kliknij **Save**.
-7. Po opublikowaniu gra będzie dostępna pod adresem:
-   `https://TWOJ_LOGIN.github.io/NAZWA_REPOZYTORIUM/`
+This first phase establishes the responsive reader landing screen, local PDF file selection with the browser's native PDF viewer as a fallback, and the app's privacy first visual direction. EPUB selection is recognized, but EPUB rendering is intentionally left for a later phase.
 
-Dla witryny użytkownika, w repozytorium nazwanym `TWOJ_LOGIN.github.io`, adres będzie krótszy: `https://TWOJ_LOGIN.github.io/`.
+## Run locally
 
-GitHub Pages zapewnia adres w domenie `github.io`. Własna domena wymaga osobno zarejestrowanej domeny.
+Open `index.html` in a modern browser. PDF display depends on the browser's built in PDF support. This phase does not require a build step or send selected files over the network.
 
-## Ważne
+## Suggested next phase
 
-- Gra działa jako statyczna strona i nie potrzebuje serwera aplikacyjnego.
-- Postęp zapisuje się w pamięci przeglądarki na danym urządzeniu. Nie synchronizuje się automatycznie między urządzeniami ani przeglądarkami.
-- Interfejs jest przystosowany do telefonu. Po publikacji otwórz adres strony w przeglądarce telefonu.
+Add PDF.js text extraction, scanned PDF detection, and responsive reflow, while keeping the original PDF available as a fallback. EPUB.js chapter rendering can follow as a separate phase.
